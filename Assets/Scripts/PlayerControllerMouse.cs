@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerController : MonoBehaviour {
+public class PlayerControllerMouse : MonoBehaviour {
 	
 	float speed = 8.0f;
 	public float moveSpeed;
@@ -43,7 +43,7 @@ public class PlayerController : MonoBehaviour {
 		float yMax = cameraPosition.y + yDist;
 		float yMin = cameraPosition.y - yDist;
 		
-		// check if player has gone out of bounds and invert the vecot direction on the axis 
+		// check if player has gone out of bounds and invert the vector direction on the axis 
 		if ( newPosition.y < yMin || newPosition.y > yMax ) {
 			newPosition.y = Mathf.Clamp( newPosition.y, yMin, yMax );
 			moveDirection.y = -moveDirection.y;
