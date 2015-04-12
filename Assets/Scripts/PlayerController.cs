@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class BabyController : MonoBehaviour {
+public class PlayerController : MonoBehaviour {
 	
 	float speed = 8.0f;
 	public float moveSpeed;
@@ -62,3 +62,4 @@ public class BabyController : MonoBehaviour {
 		transform.position = newPosition;
 	}
 }
+
