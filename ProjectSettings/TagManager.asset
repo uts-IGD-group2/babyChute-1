@@ -6,6 +6,7 @@ TagManager:
   tags:
   - cat
   - enemy
+  - baby
   layers:
   - Default
   - TransparentFX
@@ -43,12 +44,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Cats
+  - name: Enemy
     uniqueID: 2382741187
     locked: 0
-  - name: Enemies
-    uniqueID: 1173187071
-    locked: 0
-  - name: Zombie
+  - name: Player
     uniqueID: 1188269527
     locked: 0
