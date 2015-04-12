@@ -153,8 +153,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db5efc45297244b3282917c9400422f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraTransform: {fileID: 0}
-  backGroundHeight: 0
 --- !u!1 &1053423052
 GameObject:
   m_ObjectHideFlags: 0
@@ -1041,8 +1039,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db5efc45297244b3282917c9400422f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraTransform: {fileID: 0}
-  backGroundHeight: 0
 --- !u!212 &2009744407
 SpriteRenderer:
   m_ObjectHideFlags: 0
