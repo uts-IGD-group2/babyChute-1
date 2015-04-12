@@ -6,10 +6,4 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/LaunchScene.unity
-  - enabled: 1
-    path: Assets/Scenes/CongaScene.unity
-  - enabled: 1
-    path: Assets/Scenes/WinScene.unity
-  - enabled: 1
-    path: Assets/Scenes/LoseScene.unity
+    path: Assets/Scenes/sky-loop.unity
