@@ -1,7 +1,8 @@
-﻿	using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 
-public class CameraController : MonoBehaviour {
+
+public class zgCameraController : MonoBehaviour {
 
 	public float speed = 1f;
 	private Vector3 newPosition;

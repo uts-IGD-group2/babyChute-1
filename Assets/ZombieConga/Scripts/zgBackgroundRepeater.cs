@@ -1,7 +1,8 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
-public class BackgroundRepeater : MonoBehaviour {
+
+public class zcBackgroundRepeater : MonoBehaviour {
 
 	private Transform cameraTransform;
 	private float spriteWidth;
