@@ -13,7 +13,7 @@ public class CameraControllerKeyboard : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		newPosition.y = transform.position.y + Time.deltaTime * speed;
+		newPosition.y = transform.position.y - Time.deltaTime * speed;
 		transform.position = newPosition;
 	}
 }
