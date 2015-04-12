@@ -19,7 +19,7 @@ public class BackgroundRepeater : MonoBehaviour {
 	void Update () {
 		if( (transform.position.y + backGroundHeight) < cameraTransform.position.y) {
 			Vector3 newPos = transform.position;
-			newPos.y += 2.0f * backGroundHeight; 
+			newPos.y -= 2.0f * backGroundHeight; 
 			transform.position = newPos;
 		}
 	}
