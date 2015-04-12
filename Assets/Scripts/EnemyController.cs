@@ -24,9 +24,9 @@ public class EnemyController : MonoBehaviour {
 		if (Camera.main == null)
 			return;
 
-		float yMax = Camera.main.orthographicSize - 0.5f;
-		transform.position = new Vector3( spawnPoint.position.x, 
-		                                  Random.Range(-yMax, yMax), 
+		float xMax = Camera.main.orthographicSize - 0.5f;
+		transform.position = new Vector3( spawnPoint.position.y, 
+		                                  Random.Range(-xMax, xMax), 
 		                                  transform.position.z );
 	}
 }
