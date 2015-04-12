@@ -14,7 +14,7 @@ public class CameraController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		// move camera down
-		newPosition.y = transform.position.y + Time.deltaTime * speed;
+		newPosition.y = transform.position.y - Time.deltaTime * speed;
 		//print ("cam-pos" + newPosition);
 		transform.position = newPosition;
 	}
