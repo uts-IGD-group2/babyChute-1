@@ -17,9 +17,9 @@ public class BackgroundRepeater : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if( (transform.position.y + backGroundHeight) < cameraTransform.position.y) {
+		if( (transform.position.y - backGroundHeight) > cameraTransform.position.y) {
 			Vector3 newPos = transform.position;
-			newPos.y += 2.0f * backGroundHeight; 
+			newPos.y -= 2.0f * backGroundHeight; 
 			transform.position = newPos;
 		}
 	}

@@ -1,32 +1,51 @@
-﻿
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 
-
 public class EnemyController : MonoBehaviour {
-
+	
+	// Use this for initialization
 	public float speed = -1;
 	private Transform spawnPoint;
+	private float xRand = 5;
+	private Sprite initSpriteFrame;
 
-
+//	foreach Camera c in Camera.allCameras {
+//		if (c.gameObject.name == "Main_Camera")
+//			Camera mainCamera = c;
+//	}
+	
+	// Use this for initialization
 	void Start () {
 		GetComponent<Rigidbody2D>().velocity = new Vector2(speed, 0);
-		spawnPoint = GameObject.Find("spawnPoint").transform;
+		initSpriteFrame = GetComponent<SpriteRenderer>().sprite;
+
+		spawnPoint = GameObject.Find("SpawnPoint_Right").transform;
+	}
+	
+	// Update is called once per frame
+	void Update () {
+		
 	}
 
-
-	void Update () {
-		// Update is called once per frame
+	void OnTriggerEnter2D( Collider2D other ) {
+		Application.LoadLevel("Lose");
 	}
 
 	void OnBecameInvisible() {
-		// added to remove error displayed by Unity when you stop playing the scene
+		SpawnObject();
+		GetComponent<SpriteRenderer>().sprite = initSpriteFrame;
+		print ( GetComponent<SpriteRenderer>().sprite.name );
+	}
+
+
+	void SpawnObject() {
+		// This line added to remove error displayed by Unity when you stop playing the scene
 		if (Camera.main == null)
 			return;
 
-		float xMax = Camera.main.orthographicSize - 0.5f;
-		transform.position = new Vector3( spawnPoint.position.y, 
-		                                  Random.Range(-xMax, xMax), 
-		                                  transform.position.z );
+		transform.position = new Vector3( spawnPoint.position.x + 2 + Random.Range(-xRand, xRand),
+		                                  spawnPoint.position.y,  
+		                                  0 );
 	}
+
 }
