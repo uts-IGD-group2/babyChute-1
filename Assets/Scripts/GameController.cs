@@ -118,11 +118,12 @@ public class GameController : MonoBehaviour {
 	}
 
 	void UpdateTimeleft() {
+		float tt = _gameOver ? 0.0f : _timeLeft;
 		string floatToTime = string.Format(
 			"{0:#0}:{1:00}.{2:0}",
-			Mathf.Floor(_timeLeft / 60),//minutes
-			Mathf.Floor(_timeLeft) % 60,//seconds
-			Mathf.Floor((_timeLeft*10) % 10)//miliseconds
+			Mathf.Floor(tt / 60),//minutes
+			Mathf.Floor(tt) % 60,//seconds
+			Mathf.Floor((tt*10) % 10)//miliseconds
 			);
 		timerText.text = "t2Win: " + floatToTime;
 

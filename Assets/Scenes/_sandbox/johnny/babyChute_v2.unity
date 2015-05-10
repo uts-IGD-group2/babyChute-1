@@ -487,8 +487,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db5efc45297244b3282917c9400422f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scrollSpeed: 1
-  tileSizeZ: 30
+  cameraTransform: {fileID: 0}
+  backGroundHeight: 0
 --- !u!1 &1617397088
 GameObject:
   m_ObjectHideFlags: 0
@@ -517,9 +517,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44b7705b5f274c94f888ca8d23bf970a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  screenEdge: 3
-  yOffset: 0
-  xOffset: 0
 --- !u!4 &1617397090
 Transform:
   m_ObjectHideFlags: 0
@@ -669,7 +666,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bb2077decb977c489e9f51ebad589e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: -1
 --- !u!58 &1864957342
 CircleCollider2D:
   m_ObjectHideFlags: 0
