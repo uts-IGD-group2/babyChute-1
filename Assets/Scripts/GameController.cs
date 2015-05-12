@@ -30,8 +30,11 @@ public class GameController : MonoBehaviour {
 
 	// Internal attributes to keep track of the game state
 	private bool  _gameOver;
-	private bool  _restart;
+	private bool  _gameWin;
+	private bool  _levelLose;
+	private bool  _levelWin;
 	private int   _currentLevel;
+
 	private int   _score;
 	private int   _lives;
 	private float _timeLeft;
@@ -39,8 +42,9 @@ public class GameController : MonoBehaviour {
 
 
 	void Start () {
-		_gameOver = false;
-		_restart  = false;
+		_gameOver  = false;
+		_levelLose = false;
+		_levelWin  = false;
 		_currentLevel = 0;
 		restartText.text = "";
 		gameOverText.text = "";
@@ -48,10 +52,13 @@ public class GameController : MonoBehaviour {
 		_score = 0;
 		_lives = playerLives;
 		_timeLeft = timeToWin;
+
 //		UpdateScore ();
 		UpdateLife ();
 		UpdateTimeleft ();
-//		StartCoroutine ( SpawnWaves () );
+
+//		SpawnWaves ();
+		StartCoroutine ( SpawnWaves () );
 	}
 
 	void Update () {
@@ -60,23 +67,33 @@ public class GameController : MonoBehaviour {
 		ProcessTime();
 
 		// Player has lost all lives
-		if (_restart) {
-			if (Input.GetKeyDown (KeyCode.R)) {
-				Application.LoadLevel (Application.loadedLevel);
-			}
+		if (_levelLose) {
+			LevelLose();
 		}
 
 		// Player has lasted past the time limit
-		if(_timeLeft < 0) {
-			GameWin ();
+		if(_timeLeft < 0) 
+		{
+			LevelWin();
 		}
 
 	}
 
-	IEnumerator SpawnWaves () {
+//	void SpawnWaves ()
+//	{
+//		GameObject hazard = hazards [Random.Range (0, hazards.Length)];
+//		Vector3 spawnPosition = new Vector3 (Random.Range (-spawnValues.x, spawnValues.x), spawnValues.y, spawnValues.z);
+//		Quaternion spawnRotation = Quaternion.identity;
+//		Instantiate (hazard, spawnPosition, spawnRotation);
+//	}
+
+	IEnumerator SpawnWaves () 
+	{
 		yield return new WaitForSeconds (startWait);
-		while (true) {
-			for (int i = 0; i < hazardCount; i++) {
+		while (true) 
+		{
+			for (int i = 0; i < hazardCount; i++) 
+			{
 				GameObject hazard = hazards [Random.Range (0, hazards.Length)];
 				Vector3 spawnPosition = new Vector3 (Random.Range (-spawnValues.x, spawnValues.x), spawnValues.y, spawnValues.z);
 				Quaternion spawnRotation = Quaternion.identity;
@@ -85,9 +102,8 @@ public class GameController : MonoBehaviour {
 			}
 			yield return new WaitForSeconds (waveWait);
 			
-			if (_gameOver) {
-				restartText.text = "Press 'R' for Restart";
-				_restart = true;
+			if (_levelLose || _timeLeft < 0 ) 
+			{
 				break;
 			}
 		}
@@ -102,11 +118,22 @@ public class GameController : MonoBehaviour {
 //		scoreText.text = "Score: " + _score;
 //	}
 
-
-	public void RemoveLife (int lifeValue) {
-		_lives -= lifeValue;
-		UpdateLife ();
+	public void UpdateDashCooldown(float dashCooldown) 
+	{
+		dashCooldownText.text = "t2Dash: " + dashCooldown;
 	}
+
+
+	public void RemoveLife (int lifeValue=1) {
+		if (_lives > 0)
+		{
+			_lives -= lifeValue;
+			UpdateLife();
+		}
+		else
+			_levelLose = true;
+	}
+
 	void UpdateLife () {
 		livesText.text = "Lives x " + _lives;
 	}
@@ -118,7 +145,7 @@ public class GameController : MonoBehaviour {
 	}
 
 	void UpdateTimeleft() {
-		float tt = _gameOver ? 0.0f : _timeLeft;
+		float tt = _levelLose ? 0.0f : _timeLeft;
 		string floatToTime = string.Format(
 			"{0:#0}:{1:00}.{2:0}",
 			Mathf.Floor(tt / 60),//minutes
@@ -126,22 +153,43 @@ public class GameController : MonoBehaviour {
 			Mathf.Floor((tt*10) % 10)//miliseconds
 			);
 		timerText.text = "t2Win: " + floatToTime;
-
-	}
-	
-	public void GameOver () {
-		gameOverText.text = "Game Over!";
-		_gameOver = true;
 	}
 
-	public void GameWin () {
+
+	void LevelWin () 
+	{
 		gameOverText.text = "Game Win!";
 //		Application.LoadLevel("Win");
-		_gameOver = true;
+		restartText.text = "Press 'Space' to Continue";
+		if (Input.GetKeyDown (KeyCode.Space)) 
+		{
+				NextLevel();
+			}
+		_levelWin = true;
 	}
 
-	public void UpdateDashCooldown(float dashCooldown) {
-		dashCooldownText.text = "t2Dash: " + dashCooldown;
+	public void LevelLose() 
+	{
+		_levelLose = true;
+		gameOverText.text = "Game Over!";
+		restartText.text = "Press 'R' for Restart";
+		if (Input.GetKeyDown (KeyCode.R)) 
+		{
+			Application.LoadLevel (Application.loadedLevel);
+		}
 	}
+
+	public bool isLevelOver() 
+	{
+		return _levelLose;
+
+	}
+
+	void NextLevel () 
+	{
+		_currentLevel++;
+		Application.LoadLevel("level_" + _currentLevel);
+	}
+
 }
 
