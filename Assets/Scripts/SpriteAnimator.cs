@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class BirdAnimator : MonoBehaviour {
+public class SpriteAnimator : MonoBehaviour {
 
 	public Sprite[] sprites;
 	public float framesPerSecond = 12;
@@ -10,8 +10,8 @@ public class BirdAnimator : MonoBehaviour {
 
 	void Awake ()
 	{
+		// TODO: add init rand frame
 		int rand = Random.Range(0, sprites.Length);
-		print(rand);
 		initSpriteFrame = sprites[rand];
 	}
 
