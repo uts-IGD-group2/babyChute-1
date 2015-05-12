@@ -48,7 +48,7 @@ public class PlayerController : MonoBehaviour
 		
 	void FixedUpdate ()
 	{
-		if ( gameController.isLevelOver() ) {
+		if ( gameController.isLevelOver() && !gameController.d_WIN_LOSE_OFF ) {
 			_moveHorizontal = 0.0f;
 			_moveVertical   = 0.0f;
 		} else {
