@@ -1357,7 +1357,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e65dc16fb77ab674a89612c528560bf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  d_WIN_LOSE_OFF: 1
+  d_WIN_LOSE_OFF: 0
   hazards:
   - {fileID: 1864957339}
   - {fileID: 1584540011}
