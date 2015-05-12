@@ -60,7 +60,7 @@ public class PlayerController : MonoBehaviour
 
 		Vector3 movement = new Vector3 (_moveHorizontal, _moveVertical*100, 0.0f);
 		float spd = !_isInvulnerable ? _playerSpeed : _playerSpeed * 0.5f;
-		GetComponent<Rigidbody2D>().velocity = movement * _playerSpeed;
+		GetComponent<Rigidbody2D>().velocity = movement * spd;
 		GetComponent<Rigidbody2D>().position = new Vector3 (
 			Mathf.Clamp (GetComponent<Rigidbody2D>().position.x, boundary.xMin, boundary.xMax), 
 			Mathf.Clamp (GetComponent<Rigidbody2D>().position.y, boundary.yMin, boundary.yMax),
