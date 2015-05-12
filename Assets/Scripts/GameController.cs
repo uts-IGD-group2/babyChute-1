@@ -3,6 +3,9 @@ using System.Collections;
 
 public class GameController : MonoBehaviour {	
 
+	// DEBUG
+	public bool d_WIN_LOSE_OFF;
+
 	// Paramaters for Enemies
 	public GameObject[] hazards;
 	public Vector3 spawnValues;
@@ -64,17 +67,18 @@ public class GameController : MonoBehaviour {
 	void Update () {
 
 		// Process game time mechanics
-		ProcessTime();
+		UpdateTimers();
 
-		// Player has lost all lives
-		if (_levelLose) {
-			LevelLose();
-		}
 
-		// Player has lasted past the time limit
-		if(_timeLeft < 0) 
+		if ( !d_WIN_LOSE_OFF )
 		{
-			LevelWin();
+			// Player has lost all lives
+			if (_levelLose)
+				LevelLose();
+
+			// Player has lasted past the time limit
+			if(_timeLeft < 0) 
+				LevelWin();
 		}
 
 	}
@@ -89,18 +93,22 @@ public class GameController : MonoBehaviour {
 
 	IEnumerator SpawnWaves () 
 	{
-		yield return new WaitForSeconds (startWait);
+		yield return new WaitForSeconds( startWait );
 		while (true) 
 		{
 			for (int i = 0; i < hazardCount; i++) 
 			{
 				GameObject hazard = hazards [Random.Range (0, hazards.Length)];
-				Vector3 spawnPosition = new Vector3 (Random.Range (-spawnValues.x, spawnValues.x), spawnValues.y, spawnValues.z);
+				Vector3 spawnPosition = new Vector3 ( 
+                     Random.Range( -spawnValues.x, spawnValues.x ), 
+                     spawnValues.y, 
+                     spawnValues.z
+                     );
 				Quaternion spawnRotation = Quaternion.identity;
-				Instantiate (hazard, spawnPosition, spawnRotation);
-				yield return new WaitForSeconds (spawnWait);
+				Instantiate( hazard, spawnPosition, spawnRotation );
+				yield return new WaitForSeconds( spawnWait );
 			}
-			yield return new WaitForSeconds (waveWait);
+			yield return new WaitForSeconds( waveWait );
 			
 			if (_levelLose || _timeLeft < 0 ) 
 			{
@@ -134,15 +142,17 @@ public class GameController : MonoBehaviour {
 			_levelLose = true;
 	}
 
+
 	void UpdateLife () {
 		livesText.text = "Lives x " + _lives;
 	}
 
 
-	void ProcessTime() {
+	void UpdateTimers() {
 		_timeLeft = timeToWin - Time.time;
 		UpdateTimeleft();
 	}
+
 
 	void UpdateTimeleft() {
 		float tt = _levelLose ? 0.0f : _timeLeft;
@@ -159,14 +169,16 @@ public class GameController : MonoBehaviour {
 	void LevelWin () 
 	{
 		gameOverText.text = "Game Win!";
-//		Application.LoadLevel("Win");
-		restartText.text = "Press 'Space' to Continue";
-		if (Input.GetKeyDown (KeyCode.Space)) 
-		{
-				NextLevel();
-			}
 		_levelWin = true;
+
+		restartText.text = "Press 'Space' to Continue";
+		if ( Input.GetKeyDown(KeyCode.Space) ) 
+		{
+			// NextLevel();
+		}
+
 	}
+
 
 	public void LevelLose() 
 	{
@@ -179,16 +191,16 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
+
 	public bool isLevelOver() 
 	{
 		return _levelLose;
-
 	}
 
-	void NextLevel () 
+	void NextLevel() 
 	{
 		_currentLevel++;
-		Application.LoadLevel("level_" + _currentLevel);
+		Application.LoadLevel( "level_" + _currentLevel );
 	}
 
 }
