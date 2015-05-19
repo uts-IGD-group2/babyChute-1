@@ -16,9 +16,14 @@ public class KillBox : MonoBehaviour
 	
 	}
 
-	void OnTriggerEnter(Collider other) {
-		if(other.gameObject.tag == "Player") {
-			gameController.LevelLose();
+	void OnTriggerExit(Collider other) {
+		if(other.gameObject.tag == "Player") 
+        {
+			gameController.StageLose();
 		}
+        else
+        {
+            Destroy(other.gameObject);
+        }
 	}
 }

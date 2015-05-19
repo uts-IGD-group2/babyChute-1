@@ -21,8 +21,7 @@ public class ForceWind : MonoBehaviour {
 
 	void OnTriggerStay2D(Collider2D other)
 	{
-		Debug.Log("Object is in trigger");
-
+        Debug.Log("other: " + other.tag);
 
 		if ( direction == Dir.Up )
 			vec = Vector2.up;
