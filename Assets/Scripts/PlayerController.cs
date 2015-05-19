@@ -108,13 +108,13 @@ public class PlayerController : MonoBehaviour
 	// Custom methods
 	void UpdateDash() 
 	{
-        _dashCooldown = _dashNext > Time.deltaTime ? _dashNext - Time.deltaTime : 0.0f;
+        _dashCooldown = _dashNext > Time.time ? _dashNext - Time.time : 0.0f;
 		gameController.UpdateDashCooldown(_dashCooldown);
 	}
 
     float DoDash()
     {
-        _dashNext = Time.deltaTime + dashCooldownPeriod;
+        _dashNext = Time.time + dashCooldownPeriod;
         // TODO: have burp/fart effect
         //				Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
         //				GetComponent<AudioSource>().Play ()

@@ -482,6 +482,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eed6585f11e242048b2b14a8f917ea99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!132 &1246948955 stripped
+GUIText:
+  m_PrefabParentObject: {fileID: 13283606, guid: a3927620f90849849a467e7645174317,
+    type: 2}
+  m_PrefabInternal: {fileID: 1785220234}
 --- !u!132 &1267226098 stripped
 GUIText:
   m_PrefabParentObject: {fileID: 13228424, guid: a3927620f90849849a467e7645174317,
@@ -568,6 +573,10 @@ Transform:
 GUIText:
   m_PrefabParentObject: {fileID: 13238288, guid: a3927620f90849849a467e7645174317,
     type: 2}
+  m_PrefabInternal: {fileID: 1785220234}
+--- !u!1 &1959747367 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 106452, guid: a3927620f90849849a467e7645174317, type: 2}
   m_PrefabInternal: {fileID: 1785220234}
 --- !u!1 &2013403945
 GameObject:
@@ -750,8 +759,9 @@ MonoBehaviour:
   waveWait: 10
   timeForWin: 30
   playerLives: 3
-  livesText: {fileID: 1684198660}
-  lifeDecal: {fileID: 0}
+  stageText: {fileID: 1684198660}
+  livesText: {fileID: 1246948955}
+  lifeDecal: {fileID: 1959747367}
   timerText: {fileID: 1719991897}
   dashCooldownText: {fileID: 1945262087}
   restartText: {fileID: 1276980548}

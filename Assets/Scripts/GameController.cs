@@ -142,7 +142,7 @@ public class GameController : MonoBehaviour {
 
 
 	public void RemoveLife (int lifeValue=1) {
-		if (_lives >= 0)
+		if (_lives > 0)
 		{
 			_lives -= lifeValue;
 			UpdateLife();
