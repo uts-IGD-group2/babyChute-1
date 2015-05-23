@@ -13,14 +13,14 @@ public class PlayerController : MonoBehaviour
 {
 	public float gravity;
 	public float playerSpeed;
-	public float dashSpeed;
-	public float dashCooldownPeriod = 2.0f;
+	public float dashSpeed = 15;
+	public float dashCooldownPeriod = 3.0f;
 	public float invulnerableCooldownPeriod = 3.0f;
 
 	public Boundary boundary;
 
 	// Internal attributes to keep track of the player state
-	private float _playerSpeed;
+    private bool _playerIsDashing;
 
 	private float _moveHorizontal;
 	private float _moveVertical;
@@ -29,36 +29,32 @@ public class PlayerController : MonoBehaviour
 	private float _dashCooldown;
 
 	private bool  _isInvulnerable;
-	private float _vulnerableNext;
+    private float _invulnerableCooldown;
 
-
-	private GameController gameController;
+    private GameController Game_Ctrl;
 
 
 	void Start () 
 	{;
 		_isInvulnerable = false;
-        _vulnerableNext = 0.0f;
-		_playerSpeed = playerSpeed;
-
-		gameController = FindObjectOfType( typeof(GameController) ) as GameController;
+		Game_Ctrl = FindObjectOfType( typeof(GameController) ) as GameController;
 
 	}
 		
 	void FixedUpdate ()
 	{
-		if ( gameController.isStageOver() && !gameController.d_WIN_LOSE_OFF ) {
-			_moveHorizontal = 0.0f;
-			_moveVertical   = 0.0f;
-		} else {
-			_moveHorizontal = Input.GetAxis ("Horizontal");
-			_moveVertical   = Input.GetAxis ("Vertical");
-		}
-//		print(_moveVertical + ", " + _moveHorizontal);
+		_moveHorizontal = Input.GetAxis ("Horizontal");
+		_moveVertical   = Input.GetAxis ("Vertical");
+        // Player want's to use dash ability
+        if (Input.GetKeyDown(KeyCode.Space))
+            if (CanDash())
+                StartDash();
 
-		Vector3 movement = new Vector3 (_moveHorizontal, _moveVertical*100, 0.0f);
-		float spd = !_isInvulnerable ? _playerSpeed : _playerSpeed * 0.5f;
-		GetComponent<Rigidbody2D>().velocity = movement * spd;
+
+        Vector3 movement = new Vector3(_moveHorizontal, _moveVertical * 50, 0.0f);
+        float speedMag = UpdatePlayerMag();
+
+        GetComponent<Rigidbody2D>().velocity = movement * speedMag;
 		GetComponent<Rigidbody2D>().position = new Vector3 (
 			Mathf.Clamp (GetComponent<Rigidbody2D>().position.x, boundary.xMin, boundary.xMax), 
 			Mathf.Clamp (GetComponent<Rigidbody2D>().position.y, boundary.yMin, boundary.yMax),
@@ -71,36 +67,33 @@ public class PlayerController : MonoBehaviour
 	{
 		UpdateDash();
 
-		// Player want's to use dash ability
-		if (_moveHorizontal > 0.1 || _moveHorizontal < -0.1) 
-		{
-            if (Input.GetKeyDown(KeyCode.Space) && Time.deltaTime > _dashNext) 
-                _playerSpeed = DoDash();
-            else
-                _playerSpeed = playerSpeed;
-		} 
-   
-
-
 		// check invulnrability state
 		if ( _isInvulnerable )
-		{
 			UpdateInvulnerability();
-		}
-
 	}
 
 
 	void OnTriggerEnter2D (Collider2D other)
 	{
-        
-        if (other.tag == "Enemy")
+        if (Game_Ctrl.d_DEBUG)
+            print("player trig: " + other.tag);
+
+        if ( other.tag == "Enemy" || other.tag == "Branch" )
         {
-            print("other " + other.tag);
-            if (!_isInvulnerable)
-                print("TakeHit");
-            TakeHit();
+            if( !_isInvulnerable )
+            {
+                if (Game_Ctrl.d_DEBUG) 
+                    print("TakeHit");
+                
+                TakeHit();
+            }
         }
+
+        else if( other.tag == "Diaper" )
+            GotDiaper(other);
+        
+        else if( other.tag == "RainCloud" )
+            HitRainCloud(other);
 	}
 	
 
@@ -108,46 +101,85 @@ public class PlayerController : MonoBehaviour
 	// Custom methods
 	void UpdateDash() 
 	{
-        _dashCooldown = _dashNext > Time.deltaTime ? _dashNext - Time.deltaTime : 0.0f;
-		gameController.UpdateDashCooldown(_dashCooldown);
+        _dashCooldown = _dashNext > Time.time ? _dashNext - Time.time : 0.0f;
+        _playerIsDashing = ( _dashCooldown > 0.1f );
+
+        Game_Ctrl.UpdateDashCooldown(_dashCooldown); 
 	}
 
-    float DoDash()
+
+    bool CanDash()
     {
-        _dashNext = Time.deltaTime + dashCooldownPeriod;
+        if (_moveHorizontal > 0.01 || _moveHorizontal < -0.01) 
+	    {
+            if ( Time.time > _dashNext )
+                return true;
+        }
+        return false;
+    }
+
+
+    void StartDash()
+    {
+        _dashNext = Time.time + dashCooldownPeriod;
+        _playerIsDashing = true;
+
         // TODO: have burp/fart effect
         //				Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
         //				GetComponent<AudioSource>().Play ()
-
-        return _playerSpeed * dashSpeed;
     }
+
+
+    float UpdatePlayerMag()
+    {
+        if ( Game_Ctrl.isStageOver() && !Game_Ctrl.d_WIN_LOSE_OFF )
+            return 0.0f;
+        else if ( _isInvulnerable )
+            return 0.5f;
+
+        float mag = _playerIsDashing ? dashSpeed : playerSpeed;
+        return mag;
+    }
+
 
 	void TakeHit()
 	{
 		_isInvulnerable = true;
-        _vulnerableNext = Time.deltaTime + invulnerableCooldownPeriod;
-		print("RemoveLife");
-		gameController.RemoveLife();
+        _invulnerableCooldown = 0.0f;
+        
+        if (Game_Ctrl.d_DEBUG)  print("RemoveLife");
+        Game_Ctrl.RemoveLife();
+        UpdateInvulnerability();
 	}
+
+
+    void GotDiaper(Collider2D other)
+    {
+        DestroyObject(other);
+        //TODO: remove negative effect
+    }
+
+
+    void HitRainCloud(Collider2D other)
+    {
+        //TODO: make RainCloud rain
+    }
 
 
 	void UpdateInvulnerability()
 	{
-		print("isInvulnerable: " + _isInvulnerable);
-        _dashCooldown = _dashNext > Time.deltaTime ? _dashNext - Time.deltaTime : 0.0f;
-        _vulnerableNext += Time.deltaTime;
-        print("_invulnerableTime: " + _vulnerableNext + ", Period: " + invulnerableCooldownPeriod);
-        if (_vulnerableNext < invulnerableCooldownPeriod)
+        _invulnerableCooldown += Time.deltaTime;
+        if ( _invulnerableCooldown < invulnerableCooldownPeriod)
         {
-            float remainder = _vulnerableNext % 0.3f;
+            float remainder = _invulnerableCooldown % 0.3f;
 			GetComponent<Renderer>().enabled = remainder > 0.15f; 
 		} 
         else  
         {
 			GetComponent<Renderer>().enabled = true;
 			_isInvulnerable = false;
-		}                                                         
-        print("isInvulnerable: " + _isInvulnerable); 
+		}
+        if (Game_Ctrl.d_DEBUG)  print("isInvulnerable: " + _isInvulnerable); 
 	
     }
 

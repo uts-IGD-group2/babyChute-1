@@ -5,6 +5,7 @@ public class GameController : MonoBehaviour {
 
 	// DEBUG
 	public bool d_WIN_LOSE_OFF;
+    public bool d_DEBUG;
 
 	// Paramaters for Enemies
 	public GameObject[] hazards;
@@ -142,13 +143,13 @@ public class GameController : MonoBehaviour {
 
 
 	public void RemoveLife (int lifeValue=1) {
-		if (_lives >= 0)
-		{
+		if ( _lives <= 0 )
+			_stageLose = true;
+		else
+        {
 			_lives -= lifeValue;
 			UpdateLife();
 		}
-		else
-			_stageLose = true;
 	}
 
 
