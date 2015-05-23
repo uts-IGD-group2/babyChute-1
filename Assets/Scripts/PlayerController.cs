@@ -75,7 +75,7 @@ public class PlayerController : MonoBehaviour
 
 	void OnTriggerEnter2D (Collider2D other)
 	{
-        if (Game_Ctrl.d_DEBUG)
+        //if (Game_Ctrl.d_DEBUG)
             print("player trig: " + other.tag);
 
         if ( other.tag == "Enemy" || other.tag == "Branch" )
@@ -94,6 +94,7 @@ public class PlayerController : MonoBehaviour
         
         else if( other.tag == "RainCloud" )
             HitRainCloud(other);
+
 	}
 	
 
@@ -155,7 +156,7 @@ public class PlayerController : MonoBehaviour
 
     void GotDiaper(Collider2D other)
     {
-        DestroyObject(other);
+        DestroyObject(other.gameObject);
         //TODO: remove negative effect
     }
 

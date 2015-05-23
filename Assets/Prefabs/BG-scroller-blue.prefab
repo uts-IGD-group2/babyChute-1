@@ -29,7 +29,7 @@ GameObject:
   - 33: {fileID: 3363616}
   - 23: {fileID: 2341006}
   m_Layer: 0
-  m_Name: BG_scroller
+  m_Name: BG-scroller-blue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

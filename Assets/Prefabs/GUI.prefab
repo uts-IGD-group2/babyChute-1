@@ -138,7 +138,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 476866}
-  m_RootOrder: 1
+  m_RootOrder: 3
 --- !u!4 &457876
 Transform:
   m_ObjectHideFlags: 1
@@ -150,7 +150,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 476866}
-  m_RootOrder: 6
+  m_RootOrder: 0
 --- !u!4 &463078
 Transform:
   m_ObjectHideFlags: 1
@@ -162,7 +162,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 476866}
-  m_RootOrder: 4
+  m_RootOrder: 6
 --- !u!4 &469042
 Transform:
   m_ObjectHideFlags: 1
@@ -174,7 +174,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 476866}
-  m_RootOrder: 2
+  m_RootOrder: 1
 --- !u!4 &469310
 Transform:
   m_ObjectHideFlags: 1
@@ -186,7 +186,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 476866}
-  m_RootOrder: 3
+  m_RootOrder: 4
 --- !u!4 &473174
 Transform:
   m_ObjectHideFlags: 1
@@ -198,7 +198,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 476866}
-  m_RootOrder: 0
+  m_RootOrder: 5
 --- !u!4 &476866
 Transform:
   m_ObjectHideFlags: 1
@@ -209,13 +209,13 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 473174}
-  - {fileID: 425166}
-  - {fileID: 469042}
-  - {fileID: 469310}
-  - {fileID: 463078}
-  - {fileID: 499440}
   - {fileID: 457876}
+  - {fileID: 469042}
+  - {fileID: 499440}
+  - {fileID: 425166}
+  - {fileID: 469310}
+  - {fileID: 473174}
+  - {fileID: 463078}
   m_Father: {fileID: 0}
   m_RootOrder: 0
 --- !u!4 &499440
@@ -229,7 +229,7 @@ Transform:
   m_LocalScale: {x: .200000003, y: .200000003, z: .200000003}
   m_Children: []
   m_Father: {fileID: 476866}
-  m_RootOrder: 5
+  m_RootOrder: 2
 --- !u!132 &13228424
 GUIText:
   m_ObjectHideFlags: 1
