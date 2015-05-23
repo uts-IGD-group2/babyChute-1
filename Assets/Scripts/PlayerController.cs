@@ -125,21 +125,33 @@ public class PlayerController : MonoBehaviour
 	void TakeHit()
 	{
 		_isInvulnerable = true;
-        _vulnerableNext = Time.deltaTime + invulnerableCooldownPeriod;
-		print("RemoveLife");
-		gameController.RemoveLife();
+        _invulnerableCooldown = 0.0f;
+        
+        if (Game_Ctrl.d_DEBUG)  print("RemoveLife");
+        Game_Ctrl.RemoveLife();
+        UpdateInvulnerability();
+	}
+
+
+    void GotDiaper(Collider2D other)
+    {
+        DestroyObject(other);
+        //TODO: remove negative effect
+    }
+
+
+    void HitRainCloud(Collider2D other)
+    {
+        //TODO: make RainCloud rain
 	}
 
 
 	void UpdateInvulnerability()
 	{
-		print("isInvulnerable: " + _isInvulnerable);
-        _dashCooldown = _dashNext > Time.deltaTime ? _dashNext - Time.deltaTime : 0.0f;
-        _vulnerableNext += Time.deltaTime;
-        print("_invulnerableTime: " + _vulnerableNext + ", Period: " + invulnerableCooldownPeriod);
-        if (_vulnerableNext < invulnerableCooldownPeriod)
+        _invulnerableCooldown += Time.deltaTime;
+        if ( _invulnerableCooldown < invulnerableCooldownPeriod)
         {
-            float remainder = _vulnerableNext % 0.3f;
+            float remainder = _invulnerableCooldown % 0.3f;
 			GetComponent<Renderer>().enabled = remainder > 0.15f; 
 		} 
         else  
@@ -147,7 +159,7 @@ public class PlayerController : MonoBehaviour
 			GetComponent<Renderer>().enabled = true;
 			_isInvulnerable = false;
 		}                                                         
-        print("isInvulnerable: " + _isInvulnerable); 
+        if (Game_Ctrl.d_DEBUG)  print("isInvulnerable: " + _isInvulnerable); 
 	
     }
 
