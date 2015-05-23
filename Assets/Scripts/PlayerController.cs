@@ -38,8 +38,6 @@ public class PlayerController : MonoBehaviour
 	void Start () 
 	{;
 		_isInvulnerable = false;
-        _vulnerableNext = 0.0f;
-		_playerSpeed = playerSpeed;
 
 		gameController = FindObjectOfType( typeof(GameController) ) as GameController;
 
@@ -47,18 +45,18 @@ public class PlayerController : MonoBehaviour
 		
 	void FixedUpdate ()
 	{
-		if ( gameController.isStageOver() && !gameController.d_WIN_LOSE_OFF ) {
-			_moveHorizontal = 0.0f;
-			_moveVertical   = 0.0f;
-		} else {
 			_moveHorizontal = Input.GetAxis ("Horizontal");
 			_moveVertical   = Input.GetAxis ("Vertical");
-		}
-//		print(_moveVertical + ", " + _moveHorizontal);
+        // Player want's to use dash ability
+        if (Input.GetKeyDown(KeyCode.Space))
+            if (CanDash())
+                StartDash();
 
-		Vector3 movement = new Vector3 (_moveHorizontal, _moveVertical*100, 0.0f);
-		float spd = !_isInvulnerable ? _playerSpeed : _playerSpeed * 0.5f;
-		GetComponent<Rigidbody2D>().velocity = movement * spd;
+
+        Vector3 movement = new Vector3(_moveHorizontal, _moveVertical * 50, 0.0f);
+        float speedMag = UpdatePlayerMag();
+
+        GetComponent<Rigidbody2D>().velocity = movement * speedMag;
 		GetComponent<Rigidbody2D>().position = new Vector3 (
 			Mathf.Clamp (GetComponent<Rigidbody2D>().position.x, boundary.xMin, boundary.xMax), 
 			Mathf.Clamp (GetComponent<Rigidbody2D>().position.y, boundary.yMin, boundary.yMax),
@@ -71,24 +69,10 @@ public class PlayerController : MonoBehaviour
 	{
 		UpdateDash();
 
-		// Player want's to use dash ability
-		if (_moveHorizontal > 0.1 || _moveHorizontal < -0.1) 
-		{
-            if (Input.GetKeyDown(KeyCode.Space) && Time.deltaTime > _dashNext) 
-                _playerSpeed = DoDash();
-            else
-                _playerSpeed = playerSpeed;
-		} 
-   
-
-
 		// check invulnrability state
 		if ( _isInvulnerable )
-		{
 			UpdateInvulnerability();
 		}
-
-	}
 
 
 	void OnTriggerEnter2D (Collider2D other)
@@ -109,18 +93,45 @@ public class PlayerController : MonoBehaviour
 	void UpdateDash() 
 	{
         _dashCooldown = _dashNext > Time.time ? _dashNext - Time.time : 0.0f;
-		gameController.UpdateDashCooldown(_dashCooldown);
+        _playerIsDashing = ( _dashCooldown > 0.1f );
+
+        Game_Ctrl.UpdateDashCooldown(_dashCooldown); 
 	}
 
-    float DoDash()
+
+    bool CanDash()
+    {
+        if (_moveHorizontal > 0.01 || _moveHorizontal < -0.01) 
+	    {
+            if ( Time.time > _dashNext )
+                return true;
+        }
+        return false;
+    }
+
+
+    void StartDash()
     {
         _dashNext = Time.time + dashCooldownPeriod;
+        _playerIsDashing = true;
+
         // TODO: have burp/fart effect
         //				Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
         //				GetComponent<AudioSource>().Play ()
-
-        return _playerSpeed * dashSpeed;
     }
+
+
+    float UpdatePlayerMag()
+    {
+        if ( Game_Ctrl.isStageOver() && !Game_Ctrl.d_WIN_LOSE_OFF )
+            return 0.0f;
+        else if ( _isInvulnerable )
+            return 0.5f;
+
+        float mag = _playerIsDashing ? dashSpeed : playerSpeed;
+        return mag;
+    }
+
 
 	void TakeHit()
 	{
