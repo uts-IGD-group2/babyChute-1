@@ -13,14 +13,14 @@ public class PlayerController : MonoBehaviour
 {
 	public float gravity;
 	public float playerSpeed;
-	public float dashSpeed;
-	public float dashCooldownPeriod = 2.0f;
+	public float dashSpeed = 15;
+	public float dashCooldownPeriod = 3.0f;
 	public float invulnerableCooldownPeriod = 3.0f;
 
 	public Boundary boundary;
 
 	// Internal attributes to keep track of the player state
-	private float _playerSpeed;
+    private bool _playerIsDashing;
 
 	private float _moveHorizontal;
 	private float _moveVertical;
@@ -29,24 +29,22 @@ public class PlayerController : MonoBehaviour
 	private float _dashCooldown;
 
 	private bool  _isInvulnerable;
-	private float _vulnerableNext;
+    private float _invulnerableCooldown;
 
-
-	private GameController gameController;
+    private GameController Game_Ctrl;
 
 
 	void Start () 
 	{;
 		_isInvulnerable = false;
-
-		gameController = FindObjectOfType( typeof(GameController) ) as GameController;
+		Game_Ctrl = FindObjectOfType( typeof(GameController) ) as GameController;
 
 	}
 		
 	void FixedUpdate ()
 	{
-			_moveHorizontal = Input.GetAxis ("Horizontal");
-			_moveVertical   = Input.GetAxis ("Vertical");
+		_moveHorizontal = Input.GetAxis ("Horizontal");
+		_moveVertical   = Input.GetAxis ("Vertical");
         // Player want's to use dash ability
         if (Input.GetKeyDown(KeyCode.Space))
             if (CanDash())
@@ -72,19 +70,30 @@ public class PlayerController : MonoBehaviour
 		// check invulnrability state
 		if ( _isInvulnerable )
 			UpdateInvulnerability();
-		}
+	}
 
 
 	void OnTriggerEnter2D (Collider2D other)
 	{
-        
-        if (other.tag == "Enemy")
+        if (Game_Ctrl.d_DEBUG)
+            print("player trig: " + other.tag);
+
+        if ( other.tag == "Enemy" || other.tag == "Branch" )
         {
-            print("other " + other.tag);
-            if (!_isInvulnerable)
-                print("TakeHit");
-            TakeHit();
+            if( !_isInvulnerable )
+            {
+                if (Game_Ctrl.d_DEBUG) 
+                    print("TakeHit");
+                
+                TakeHit();
+            }
         }
+
+        else if( other.tag == "Diaper" )
+            GotDiaper(other);
+        
+        else if( other.tag == "RainCloud" )
+            HitRainCloud(other);
 	}
 	
 
@@ -154,7 +163,7 @@ public class PlayerController : MonoBehaviour
     void HitRainCloud(Collider2D other)
     {
         //TODO: make RainCloud rain
-	}
+    }
 
 
 	void UpdateInvulnerability()
@@ -169,7 +178,7 @@ public class PlayerController : MonoBehaviour
         {
 			GetComponent<Renderer>().enabled = true;
 			_isInvulnerable = false;
-		}                                                         
+		}
         if (Game_Ctrl.d_DEBUG)  print("isInvulnerable: " + _isInvulnerable); 
 	
     }
