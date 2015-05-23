@@ -10,7 +10,7 @@ GameObject:
   - 4: {fileID: 499440}
   - 212: {fileID: 21247710}
   m_Layer: 0
-  m_Name: Baby-head
+  m_Name: Health-Decal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
