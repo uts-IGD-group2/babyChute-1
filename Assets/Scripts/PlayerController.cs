@@ -31,11 +31,17 @@ public class PlayerController : MonoBehaviour
 	private bool  _isInvulnerable;
     private float _invulnerableCooldown;
 
+	private bool  _WetNappy;
+
     private GameController Game_Ctrl;
 
+	void Awake () 
+	{
+		DontDestroyOnLoad (this);
+	}
 
 	void Start () 
-	{;
+	{
 		_isInvulnerable = false;
 		Game_Ctrl = FindObjectOfType( typeof(GameController) ) as GameController;
 
@@ -47,12 +53,12 @@ public class PlayerController : MonoBehaviour
 		_moveVertical   = Input.GetAxis ("Vertical");
         // Player want's to use dash ability
         if (Input.GetKeyDown(KeyCode.Space))
-            if (CanDash())
-                StartDash();
+			if ( DashCan() )
+				DashStart();
 
 
         Vector3 movement = new Vector3(_moveHorizontal, _moveVertical * 50, 0.0f);
-        float speedMag = UpdatePlayerMag();
+		float speedMag = PlayerMagUpdate();
 
         GetComponent<Rigidbody2D>().velocity = movement * speedMag;
 		GetComponent<Rigidbody2D>().position = new Vector3 (
@@ -65,11 +71,11 @@ public class PlayerController : MonoBehaviour
 
 	void Update() 
 	{
-		UpdateDash();
+		DashUpdate();
 
 		// check invulnrability state
 		if ( _isInvulnerable )
-			UpdateInvulnerability();
+			InvulnerabilityUpdate();
 	}
 
 
@@ -90,26 +96,26 @@ public class PlayerController : MonoBehaviour
         }
 
         else if( other.tag == "Diaper" )
-            GotDiaper(other);
+            DiaperCollect(other);
         
         else if( other.tag == "RainCloud" )
-            HitRainCloud(other);
+            RainCloudCollide(other);
 
 	}
 	
 
 
 	// Custom methods
-	void UpdateDash() 
+	void DashUpdate() 
 	{
         _dashCooldown = _dashNext > Time.time ? _dashNext - Time.time : 0.0f;
         _playerIsDashing = ( _dashCooldown > 0.1f );
 
-        Game_Ctrl.UpdateDashCooldown(_dashCooldown); 
+		Game_Ctrl.DashCooldownUpdate(_dashCooldown); 
 	}
 
 
-    bool CanDash()
+	bool DashCan()
     {
         if (_moveHorizontal > 0.01 || _moveHorizontal < -0.01) 
 	    {
@@ -120,7 +126,7 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    void StartDash()
+	void DashStart()
     {
         _dashNext = Time.time + dashCooldownPeriod;
         _playerIsDashing = true;
@@ -131,12 +137,14 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    float UpdatePlayerMag()
+	float PlayerMagUpdate()
     {
-        if ( Game_Ctrl.isStageOver() && !Game_Ctrl.d_WIN_LOSE_OFF )
+        if ( Game_Ctrl.StageOverIs() && !Game_Ctrl.d_WIN_LOSE_OFF )
             return 0.0f;
         else if ( _isInvulnerable )
             return 0.5f;
+		else if ( _WetNappy )
+			return 0.5f;
 
         float mag = _playerIsDashing ? dashSpeed : playerSpeed;
         return mag;
@@ -150,24 +158,26 @@ public class PlayerController : MonoBehaviour
         
         if (Game_Ctrl.d_DEBUG)  print("RemoveLife");
 		Game_Ctrl.LifeRemove();
-        UpdateInvulnerability();
+		InvulnerabilityUpdate();
 	}
 
 
-    void GotDiaper(Collider2D other)
+    void DiaperCollect(Collider2D other)
     {
         DestroyObject(other.gameObject);
+		_WetNappy = false;
         //TODO: remove negative effect
     }
 
 
-    void HitRainCloud(Collider2D other)
+    void RainCloudCollide(Collider2D other)
     {
         //TODO: make RainCloud rain
+		_WetNappy = true;
     }
 
 
-	void UpdateInvulnerability()
+	void InvulnerabilityUpdate()
 	{
         _invulnerableCooldown += Time.deltaTime;
         if ( _invulnerableCooldown < invulnerableCooldownPeriod)
