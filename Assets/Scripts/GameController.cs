@@ -50,7 +50,7 @@ public class GameController : MonoBehaviour {
     void Awake()
     {
         _lives = playerLives;
-        UpdateLife();
+		LifeUpdate();
     }
 
 	void Start () {
@@ -58,8 +58,8 @@ public class GameController : MonoBehaviour {
 		_stageLose = false;
 		_stageWin  = false;
 
-		_currentstage = 1;
-        UpdateStage();
+		_currentstage = 2;
+		StageUpdate();
 
 		restartText.text = "";
 		gameOverText.text = "";
@@ -70,7 +70,7 @@ public class GameController : MonoBehaviour {
 
         // InitLife();
 		
-		UpdateTimeleft();
+		TimeleftUpdate();
 
 //		SpawnWaves ();
 		StartCoroutine ( SpawnWaves () );
@@ -79,7 +79,7 @@ public class GameController : MonoBehaviour {
 	void Update () {
 
 		// Process game time mechanics
-		UpdateTimers();
+		TimersUpdate();
 
 
 		if ( !d_WIN_LOSE_OFF )
@@ -95,6 +95,7 @@ public class GameController : MonoBehaviour {
 
         if (Input.GetKeyDown(KeyCode.X))
         {
+			print("x press");
             DoStageWin();
         }
 
@@ -142,18 +143,20 @@ public class GameController : MonoBehaviour {
 	}
 
 
-	public void RemoveLife (int lifeValue=1) {
+	public void LifeRemove (int lifeValue=1) {
 		if ( _lives <= 0 )
 			_stageLose = true;
 		else
         {
 			_lives -= lifeValue;
-			UpdateLife();
+			LifeUpdate();
 		}
 	}
 
-
-    void InitLife() 
+	/// <summary>
+	/// --- LIFE STUFFS ---
+	/// </summary>
+	void LifeInit() 
     {
 
         _lifeDecals[0] = lifeDecal;
@@ -169,7 +172,7 @@ public class GameController : MonoBehaviour {
 
     }
 
-	void UpdateLife() 
+	void LifeUpdate() 
     {
 		livesText.text = "x " + _lives;
         //if ( _lifeDecals.Length < _lives )
@@ -178,14 +181,17 @@ public class GameController : MonoBehaviour {
 	}
 
 
-	void UpdateTimers() 
+	/// <summary>
+	/// --- TIMER STUFFS ---
+	/// </summary>
+	void TimersUpdate() 
     {
         _timeLeft = timeForWin - Time.time;
-		UpdateTimeleft();
+		TimeleftUpdate();
 	}
 
 
-	void UpdateTimeleft() 
+	void TimeleftUpdate() 
     {
 		float tt = _stageLose ? 0.0f : _timeLeft;
 		string floatToTime = string.Format(
@@ -197,13 +203,16 @@ public class GameController : MonoBehaviour {
 		timerText.text = "t2Win: " + floatToTime;
 	}
 
-
-    void UpdateStage()
+	/// <summary>
+	/// --- STAGE STUFFS
+	/// </summary>
+	void StageUpdate()
     {
         stageText.text = "Stage " + _currentstage;
     }
+	
 
-	void StageWin () 
+	void StageWin() 
 	{
 		gameOverText.text = "Stage Complete!";
 		_stageWin = true;
@@ -216,6 +225,7 @@ public class GameController : MonoBehaviour {
 
 	}
 
+
 	public void StageLose() 
 	{
 		_stageLose = true;
@@ -227,20 +237,24 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
+
 	public bool isStageOver() 
 	{
 		return _stageLose;
 	}
 
+
 	void Nextstage() 
 	{
 		_currentstage++;
+		print ("stage_" + _currentstage);
         Application.LoadLevel ("stage_" + _currentstage);
 	}
 
+
     void DoStageWin()
     {
-
+		Nextstage ();
     }
 }
 

@@ -149,7 +149,7 @@ public class PlayerController : MonoBehaviour
         _invulnerableCooldown = 0.0f;
         
         if (Game_Ctrl.d_DEBUG)  print("RemoveLife");
-        Game_Ctrl.RemoveLife();
+		Game_Ctrl.LifeRemove();
         UpdateInvulnerability();
 	}
 
