@@ -13,15 +13,14 @@ public class PlayerController : MonoBehaviour
 {
 	public float gravity;
 	public float playerSpeed;
-	public float dashSpeed;
-	public float dashCooldownPeriod;
-	public float invulnerableCooldownPeriod;
+	public float dashSpeed = 15;
+	public float dashCooldownPeriod = 3.0f;
+	public float invulnerableCooldownPeriod = 3.0f;
 
 	public Boundary boundary;
 
 	// Internal attributes to keep track of the player state
-	private float _playerSpeed;
-//	private float _gravity;
+    private bool _playerIsDashing;
 
 	private float _moveHorizontal;
 	private float _moveVertical;
@@ -30,49 +29,37 @@ public class PlayerController : MonoBehaviour
 	private float _dashCooldown;
 
 	private bool  _isInvulnerable;
-	private float _invulnerableTime;
+    private float _invulnerableCooldown;
 
-
-	private GameController gameController;
+    private GameController Game_Ctrl;
 
 
 	void Start () 
-	{
-//		_gravity = gravity;
+	{;
 		_isInvulnerable = false;
-		_playerSpeed = playerSpeed;
-//		GetComponent<Rigidbody2d>().velocity = new Vector3(_gravity, 1, 1);
-		gameController = FindObjectOfType(typeof(GameController)) as GameController;
+		Game_Ctrl = FindObjectOfType( typeof(GameController) ) as GameController;
 
 	}
 		
 	void FixedUpdate ()
 	{
-		if ( gameController.isLevelOver() && !gameController.d_WIN_LOSE_OFF ) {
-			_moveHorizontal = 0.0f;
-			_moveVertical   = 0.0f;
-		} else {
-			_moveHorizontal = Input.GetAxis ("Horizontal");
-			_moveVertical   = Input.GetAxis ("Vertical");
-		}
-//		print(_moveVertical + ", " + _moveHorizontal);
+		_moveHorizontal = Input.GetAxis ("Horizontal");
+		_moveVertical   = Input.GetAxis ("Vertical");
+        // Player want's to use dash ability
+        if (Input.GetKeyDown(KeyCode.Space))
+            if (CanDash())
+                StartDash();
 
 
-		Vector3 movement = new Vector3 (_moveHorizontal, _moveVertical*100, 0.0f);
-		float spd = !_isInvulnerable ? _playerSpeed : _playerSpeed * 0.5f;
-		GetComponent<Rigidbody2D>().velocity = movement * spd;
+        Vector3 movement = new Vector3(_moveHorizontal, _moveVertical * 50, 0.0f);
+        float speedMag = UpdatePlayerMag();
+
+        GetComponent<Rigidbody2D>().velocity = movement * speedMag;
 		GetComponent<Rigidbody2D>().position = new Vector3 (
 			Mathf.Clamp (GetComponent<Rigidbody2D>().position.x, boundary.xMin, boundary.xMax), 
 			Mathf.Clamp (GetComponent<Rigidbody2D>().position.y, boundary.yMin, boundary.yMax),
 			0.0f
 			);
-
-		// check after  player being hit
-		if ( _isInvulnerable )
-		{
-			UpdateInvulnerability();
-		}
-	
 	}
 
 
@@ -80,62 +67,121 @@ public class PlayerController : MonoBehaviour
 	{
 		UpdateDash();
 
-		// Player want's to use dash ability
-		if (_moveHorizontal > 0.1 || _moveHorizontal < -0.1) 
-		{
-			if (Input.GetKeyDown(KeyCode.Space) &&  Time.time > _dashNext) 
-			{
-				_dashNext = Time.time + dashCooldownPeriod;
-				_playerSpeed *= dashSpeed;
-				// TODO: have burp/fart effect
-				//				Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
-				//				GetComponent<AudioSource>().Play ();
-			}
-		} else {
-			_playerSpeed = playerSpeed;
-		}
-
+		// check invulnrability state
+		if ( _isInvulnerable )
+			UpdateInvulnerability();
 	}
 
 
 	void OnTriggerEnter2D (Collider2D other)
 	{
-		print(other.tag);
-		if(other.tag == "Enemy")
-			if ( !_isInvulnerable )
-				TakeHit();
+        //if (Game_Ctrl.d_DEBUG)
+            print("player trig: " + other.tag);
+
+        if ( other.tag == "Enemy" || other.tag == "Branch" )
+        {
+            if( !_isInvulnerable )
+            {
+                if (Game_Ctrl.d_DEBUG) 
+                    print("TakeHit");
+                
+                TakeHit();
+            }
+        }
+
+        else if( other.tag == "Diaper" )
+            GotDiaper(other);
+        
+        else if( other.tag == "RainCloud" )
+            HitRainCloud(other);
+
 	}
 	
+
 
 	// Custom methods
 	void UpdateDash() 
 	{
-		_dashCooldown = _dashNext > Time.time ? _dashNext - Time.time : 0.0f;
-		gameController.UpdateDashCooldown(_dashCooldown);
+        _dashCooldown = _dashNext > Time.time ? _dashNext - Time.time : 0.0f;
+        _playerIsDashing = ( _dashCooldown > 0.1f );
+
+        Game_Ctrl.UpdateDashCooldown(_dashCooldown); 
 	}
+
+
+    bool CanDash()
+    {
+        if (_moveHorizontal > 0.01 || _moveHorizontal < -0.01) 
+	    {
+            if ( Time.time > _dashNext )
+                return true;
+        }
+        return false;
+    }
+
+
+    void StartDash()
+    {
+        _dashNext = Time.time + dashCooldownPeriod;
+        _playerIsDashing = true;
+
+        // TODO: have burp/fart effect
+        //				Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
+        //				GetComponent<AudioSource>().Play ()
+    }
+
+
+    float UpdatePlayerMag()
+    {
+        if ( Game_Ctrl.isStageOver() && !Game_Ctrl.d_WIN_LOSE_OFF )
+            return 0.0f;
+        else if ( _isInvulnerable )
+            return 0.5f;
+
+        float mag = _playerIsDashing ? dashSpeed : playerSpeed;
+        return mag;
+    }
 
 
 	void TakeHit()
 	{
-		if ( !_isInvulnerable )
-		{
-			_isInvulnerable = true;
-			gameController.RemoveLife();
-		}
+		_isInvulnerable = true;
+        _invulnerableCooldown = 0.0f;
+        
+        if (Game_Ctrl.d_DEBUG)  print("RemoveLife");
+        Game_Ctrl.RemoveLife();
+        UpdateInvulnerability();
 	}
+
+
+    void GotDiaper(Collider2D other)
+    {
+        DestroyObject(other.gameObject);
+        //TODO: remove negative effect
+    }
+
+
+    void HitRainCloud(Collider2D other)
+    {
+        //TODO: make RainCloud rain
+    }
 
 
 	void UpdateInvulnerability()
 	{
-		_invulnerableTime += Time.time;
-
-		if ( _invulnerableTime < 3f ) {
-			float remainder = _invulnerableTime % 0.3f;
+        _invulnerableCooldown += Time.deltaTime;
+        if ( _invulnerableCooldown < invulnerableCooldownPeriod)
+        {
+            float remainder = _invulnerableCooldown % 0.3f;
 			GetComponent<Renderer>().enabled = remainder > 0.15f; 
-		} else  {
+		} 
+        else  
+        {
 			GetComponent<Renderer>().enabled = true;
 			_isInvulnerable = false;
 		}
-	}
+        if (Game_Ctrl.d_DEBUG)  print("isInvulnerable: " + _isInvulnerable); 
+	
+    }
 
 }

@@ -1,23 +1,23 @@
 fileFormatVersion: 2
-guid: 255506003a2fb884b9a95c5e00f3bbd8
-timeCreated: 1431440873
+guid: eca5b7456977ffb4eba29aaf8cfc3523
+timeCreated: 1432402742
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Enemy-bird-round_0
-    21300002: Enemy-bird-round_1
-    21300004: Enemy-bird-round_2
-    21300006: Enemy-bird-round_3
-    21300008: Enemy-bird-round_4
-    21300010: Enemy-bird-round_5
-    21300012: Enemy-bird-round_6
-    21300014: Enemy-bird-round_7
-    21300016: Enemy-bird-round_8
-    21300018: Enemy-bird-round_9
-    21300020: Enemy-bird-round_10
-    21300022: Enemy-bird-round_11
-    21300024: Enemy-bird-round_12
-    21300026: Enemy-bird-round_13
+    21300000: Enemy-Bird-round_0
+    21300002: Enemy-Bird-round_1
+    21300004: Enemy-Bird-round_2
+    21300006: Enemy-Bird-round_3
+    21300008: Enemy-Bird-round_4
+    21300010: Enemy-Bird-round_5
+    21300012: Enemy-Bird-round_6
+    21300014: Enemy-Bird-round_7
+    21300016: Enemy-Bird-round_8
+    21300018: Enemy-Bird-round_9
+    21300020: Enemy-Bird-round_10
+    21300022: Enemy-Bird-round_11
+    21300024: Enemy-Bird-round_12
+    21300026: Enemy-Bird-round_13
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -63,7 +63,7 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     sprites:
-    - name: Enemy-bird-round_0
+    - name: Enemy-Bird-round_0
       rect:
         serializedVersion: 2
         x: 12
@@ -73,7 +73,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Enemy-bird-round_1
+    - name: Enemy-Bird-round_1
       rect:
         serializedVersion: 2
         x: 222
@@ -83,7 +83,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Enemy-bird-round_2
+    - name: Enemy-Bird-round_2
       rect:
         serializedVersion: 2
         x: 404
@@ -93,7 +93,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Enemy-bird-round_3
+    - name: Enemy-Bird-round_3
       rect:
         serializedVersion: 2
         x: 586
@@ -103,7 +103,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Enemy-bird-round_4
+    - name: Enemy-Bird-round_4
       rect:
         serializedVersion: 2
         x: 768
@@ -113,7 +113,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Enemy-bird-round_5
+    - name: Enemy-Bird-round_5
       rect:
         serializedVersion: 2
         x: 14
@@ -123,7 +123,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Enemy-bird-round_6
+    - name: Enemy-Bird-round_6
       rect:
         serializedVersion: 2
         x: 222
@@ -133,7 +133,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Enemy-bird-round_7
+    - name: Enemy-Bird-round_7
       rect:
         serializedVersion: 2
         x: 404
@@ -143,7 +143,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Enemy-bird-round_8
+    - name: Enemy-Bird-round_8
       rect:
         serializedVersion: 2
         x: 586
@@ -153,7 +153,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Enemy-bird-round_9
+    - name: Enemy-Bird-round_9
       rect:
         serializedVersion: 2
         x: 768
@@ -163,7 +163,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Enemy-bird-round_10
+    - name: Enemy-Bird-round_10
       rect:
         serializedVersion: 2
         x: 222
@@ -173,7 +173,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Enemy-bird-round_11
+    - name: Enemy-Bird-round_11
       rect:
         serializedVersion: 2
         x: 404
@@ -183,7 +183,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Enemy-bird-round_12
+    - name: Enemy-Bird-round_12
       rect:
         serializedVersion: 2
         x: 586
@@ -193,7 +193,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Enemy-bird-round_13
+    - name: Enemy-Bird-round_13
       rect:
         serializedVersion: 2
         x: 768

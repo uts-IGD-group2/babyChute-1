@@ -5,6 +5,7 @@ public class GameController : MonoBehaviour {
 
 	// DEBUG
 	public bool d_WIN_LOSE_OFF;
+    public bool d_DEBUG;
 
 	// Paramaters for Enemies
 	public GameObject[] hazards;
@@ -14,51 +15,62 @@ public class GameController : MonoBehaviour {
 	public float startWait;
 	public float waveWait;
 
-	// Paramaters for the Player
-	public float timeToWin;
-	public int playerLives;
+	// Paramaters for Player
+	public float timeForWin = 30;
+	public int  playerLives = 3;
 
 
-	// GUI entities to give feedback for the palyer
+	// GUI entities to give feedback for the user
 //	public GUIText scoreText;
+    public GUIText stageText;
 	public GUIText livesText;
+    public GameObject lifeDecal;
 	public GUIText timerText;
 	public GUIText dashCooldownText;
-
+    
 
 	// Game play state
 	public GUIText restartText;
 	public GUIText gameOverText;
 
+    private GameObject[] _lifeDecals;
 
 	// Internal attributes to keep track of the game state
 	private bool  _gameOver;
 	private bool  _gameWin;
-	private bool  _levelLose;
-	private bool  _levelWin;
-	private int   _currentLevel;
+	private bool  _stageLose;
+	private bool  _stageWin;
+	private int   _currentstage;
 
 	private int   _score;
 	private int   _lives;
 	private float _timeLeft;
 
 
+    void Awake()
+    {
+        _lives = playerLives;
+        UpdateLife();
+    }
 
 	void Start () {
 		_gameOver  = false;
-		_levelLose = false;
-		_levelWin  = false;
-		_currentLevel = 0;
+		_stageLose = false;
+		_stageWin  = false;
+
+		_currentstage = 1;
+        UpdateStage();
+
 		restartText.text = "";
 		gameOverText.text = "";
 
-		_score = 0;
-		_lives = playerLives;
-		_timeLeft = timeToWin;
+        //_score = 0;
+		
+        _timeLeft = timeForWin;
 
-//		UpdateScore ();
-		UpdateLife ();
-		UpdateTimeleft ();
+        // InitLife();
+		
+		UpdateTimeleft();
 
 //		SpawnWaves ();
 		StartCoroutine ( SpawnWaves () );
@@ -73,24 +85,22 @@ public class GameController : MonoBehaviour {
 		if ( !d_WIN_LOSE_OFF )
 		{
 			// Player has lost all lives
-			if (_levelLose)
-				LevelLose();
+			if (_stageLose)
+				StageLose();
 
 			// Player has lasted past the time limit
 			if(_timeLeft < 0) 
-				LevelWin();
+				StageWin();
 		}
+
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            DoStageWin();
+        }
 
 	}
 
-//	void SpawnWaves ()
-//	{
-//		GameObject hazard = hazards [Random.Range (0, hazards.Length)];
-//		Vector3 spawnPosition = new Vector3 (Random.Range (-spawnValues.x, spawnValues.x), spawnValues.y, spawnValues.z);
-//		Quaternion spawnRotation = Quaternion.identity;
-//		Instantiate (hazard, spawnPosition, spawnRotation);
-//	}
-
+    // Spawn enemies
 	IEnumerator SpawnWaves () 
 	{
 		yield return new WaitForSeconds( startWait );
@@ -110,7 +120,7 @@ public class GameController : MonoBehaviour {
 			}
 			yield return new WaitForSeconds( waveWait );
 			
-			if (_levelLose || _timeLeft < 0 ) 
+			if (_stageLose || _timeLeft < 0 ) 
 			{
 				break;
 			}
@@ -133,29 +143,51 @@ public class GameController : MonoBehaviour {
 
 
 	public void RemoveLife (int lifeValue=1) {
-		if (_lives > 0)
-		{
+		if ( _lives <= 0 )
+			_stageLose = true;
+		else
+        {
 			_lives -= lifeValue;
 			UpdateLife();
 		}
-		else
-			_levelLose = true;
 	}
 
 
-	void UpdateLife () {
-		livesText.text = "Lives x " + _lives;
+    void InitLife() 
+    {
+
+        _lifeDecals[0] = lifeDecal;
+        Vector3 pos = lifeDecal.transform.position;
+        Vector3 max = lifeDecal.GetComponent<SpriteRenderer>().bounds.max;
+
+        for (int ii = 1; ii < playerLives; ii++)
+        {
+            pos.x += max.x * ii;
+            print(pos);
+            _lifeDecals[ii] = Instantiate(lifeDecal, pos, Quaternion.identity) as GameObject;
+        }
+
+    }
+
+	void UpdateLife() 
+    {
+		livesText.text = "x " + _lives;
+        //if ( _lifeDecals.Length < _lives )
+        //    //TODO: IMPLEMENT ICONS TO REPRESENT LIFE COUNT.
+        //    Destroy( _lifeDecals[_lives] );
 	}
 
 
-	void UpdateTimers() {
-		_timeLeft = timeToWin - Time.time;
+	void UpdateTimers() 
+    {
+        _timeLeft = timeForWin - Time.time;
 		UpdateTimeleft();
 	}
 
 
-	void UpdateTimeleft() {
-		float tt = _levelLose ? 0.0f : _timeLeft;
+	void UpdateTimeleft() 
+    {
+		float tt = _stageLose ? 0.0f : _timeLeft;
 		string floatToTime = string.Format(
 			"{0:#0}:{1:00}.{2:0}",
 			Mathf.Floor(tt / 60),//minutes
@@ -166,42 +198,51 @@ public class GameController : MonoBehaviour {
 	}
 
 
-	void LevelWin () 
+    void UpdateStage()
+    {
+        stageText.text = "Stage " + _currentstage;
+    }
+
+	void StageWin () 
 	{
-		gameOverText.text = "Game Win!";
-		_levelWin = true;
+		gameOverText.text = "Stage Complete!";
+		_stageWin = true;
 
 		restartText.text = "Press 'Space' to Continue";
 		if ( Input.GetKeyDown(KeyCode.Space) ) 
 		{
-			// NextLevel();
+			Nextstage();
 		}
 
 	}
 
-
-	public void LevelLose() 
+	public void StageLose() 
 	{
-		_levelLose = true;
+		_stageLose = true;
 		gameOverText.text = "Game Over!";
-		restartText.text = "Press 'R' for Restart";
+		restartText.text  = "Press 'R' for Restart";
 		if (Input.GetKeyDown (KeyCode.R)) 
 		{
 			Application.LoadLevel (Application.loadedLevel);
 		}
 	}
 
-
-	public bool isLevelOver() 
+	public bool isStageOver() 
 	{
-		return _levelLose;
+		return _stageLose;
 	}
 
-	void NextLevel() 
+	void Nextstage() 
 	{
-		_currentLevel++;
-		Application.LoadLevel( "level_" + _currentLevel );
+		_currentstage++;
+        Application.LoadLevel ("stage_" + _currentstage);
 	}
 
+    void DoStageWin()
+    {
+
+    }
 }
 
+
+ 
