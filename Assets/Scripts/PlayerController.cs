@@ -35,9 +35,13 @@ public class PlayerController : MonoBehaviour
 
     private GameController Game_Ctrl;
 
+	void Awake () 
+	{
+		DontDestroyOnLoad (this);
+	}
 
 	void Start () 
-	{;
+	{
 		_isInvulnerable = false;
 		Game_Ctrl = FindObjectOfType( typeof(GameController) ) as GameController;
 
@@ -107,7 +111,7 @@ public class PlayerController : MonoBehaviour
         _dashCooldown = _dashNext > Time.time ? _dashNext - Time.time : 0.0f;
         _playerIsDashing = ( _dashCooldown > 0.1f );
 
-        Game_Ctrl.UpdateDashCooldown(_dashCooldown); 
+		Game_Ctrl.DashCooldownUpdate(_dashCooldown); 
 	}
 
 
@@ -135,7 +139,7 @@ public class PlayerController : MonoBehaviour
 
 	float PlayerMagUpdate()
     {
-        if ( Game_Ctrl.isStageOver() && !Game_Ctrl.d_WIN_LOSE_OFF )
+        if ( Game_Ctrl.StageOverIs() && !Game_Ctrl.d_WIN_LOSE_OFF )
             return 0.0f;
         else if ( _isInvulnerable )
             return 0.5f;

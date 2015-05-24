@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
+
 public class GameController : MonoBehaviour {	
 
 	// DEBUG
@@ -22,6 +23,8 @@ public class GameController : MonoBehaviour {
 
 	// GUI entities to give feedback for the user
 //	public GUIText scoreText;
+	public GameObject guiParent;
+
     public GUIText stageText;
 	public GUIText livesText;
     public GameObject lifeDecal;
@@ -40,17 +43,21 @@ public class GameController : MonoBehaviour {
 	private bool  _gameWin;
 	private bool  _stageLose;
 	private bool  _stageWin;
-	private int   _currentstage;
 
 	private int   _score;
 	private int   _lives;
 	private float _timeLeft;
 
+	private string _Boss_Stage = "stage_5";
+	private string _Story_Win  = "StoryWin";
 
     void Awake()
     {
         _lives = playerLives;
 		LifeUpdate();
+
+		// DontDestroyOnLoad( this );
+		// DontDestroyOnLoad (guiParent.gameObject);
     }
 
 	void Start () {
@@ -58,21 +65,17 @@ public class GameController : MonoBehaviour {
 		_stageLose = false;
 		_stageWin  = false;
 
-		_currentstage = 2;
 		StageUpdate();
 
-		restartText.text = "";
+		restartText.text  = "";
 		gameOverText.text = "";
 
         //_score = 0;
 		
         _timeLeft = timeForWin;
-
-        // InitLife();
 		
 		TimeleftUpdate();
 
-//		SpawnWaves ();
 		StartCoroutine ( SpawnWaves () );
 	}
 
@@ -93,12 +96,8 @@ public class GameController : MonoBehaviour {
 				StageWin();
 		}
 
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-			print("x press");
-            DoStageWin();
-        }
-
+        if ( Input.GetKeyDown(KeyCode.X) )
+            StageNext();
 	}
 
     // Spawn enemies
@@ -137,12 +136,15 @@ public class GameController : MonoBehaviour {
 //		scoreText.text = "Score: " + _score;
 //	}
 
-	public void UpdateDashCooldown(float dashCooldown) 
+	public void DashCooldownUpdate(float dashCooldown) 
 	{
 		dashCooldownText.text = "t2Dash: " + dashCooldown;
 	}
 
 
+	/// <summary>
+	/// --- LIFE methods ---
+	/// </summary>
 	public void LifeRemove (int lifeValue=1) {
 		if ( _lives <= 0 )
 			_stageLose = true;
@@ -153,12 +155,9 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
-	/// <summary>
-	/// --- LIFE STUFFS ---
-	/// </summary>
+
 	void LifeInit() 
     {
-
         _lifeDecals[0] = lifeDecal;
         Vector3 pos = lifeDecal.transform.position;
         Vector3 max = lifeDecal.GetComponent<SpriteRenderer>().bounds.max;
@@ -182,7 +181,7 @@ public class GameController : MonoBehaviour {
 
 
 	/// <summary>
-	/// --- TIMER STUFFS ---
+	/// --- TIMER methods ---
 	/// </summary>
 	void TimersUpdate() 
     {
@@ -204,58 +203,52 @@ public class GameController : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// --- STAGE STUFFS
+	/// --- STAGE methods
 	/// </summary>
 	void StageUpdate()
     {
-        stageText.text = "Stage " + _currentstage;
+		stageText.text = "Stage " + Application.loadedLevel.ToString();
     }
 	
 
 	void StageWin() 
 	{
-		gameOverText.text = "Stage Complete!";
+		gameOverText.text = "Stage " + Application.loadedLevel.ToString() + " Complete!";
 		_stageWin = true;
 
 		restartText.text = "Press 'Space' to Continue";
 		if ( Input.GetKeyDown(KeyCode.Space) ) 
 		{
-			Nextstage();
+			StageNext();
 		}
 
 	}
 
+	void StageNext() 
+
+	{
+		if (Application.loadedLevel == Application.levelCount-1 )
+			Application.LoadLevel ( Application.levelCount );
+		else
+			Application.LoadLevel (Application.loadedLevel + 1);
+	}
 
 	public void StageLose() 
 	{
 		_stageLose = true;
 		gameOverText.text = "Game Over!";
 		restartText.text  = "Press 'R' for Restart";
-		if (Input.GetKeyDown (KeyCode.R)) 
-		{
-			Application.LoadLevel (Application.loadedLevel);
-		}
+
+		if ( Input.GetKeyDown(KeyCode.R) ) 
+			Application.LoadLevel ( Application.loadedLevel );
 	}
 
 
-	public bool isStageOver() 
+	public bool StageOverIs() 
 	{
 		return _stageLose;
 	}
-
-
-	void Nextstage() 
-	{
-		_currentstage++;
-		print ("stage_" + _currentstage);
-        Application.LoadLevel ("stage_" + _currentstage);
-	}
-
-
-    void DoStageWin()
-    {
-		Nextstage ();
-    }
+	
 }
 
 
