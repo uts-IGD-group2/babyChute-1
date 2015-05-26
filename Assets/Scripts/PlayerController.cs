@@ -13,9 +13,11 @@ public class PlayerController : MonoBehaviour
 {
 	public float gravity;
 	public float playerSpeed;
-	public float dashSpeed = 15;
+	public float dashSpeed = 10;
 	public float dashCooldownPeriod = 3.0f;
 	public float invulnerableCooldownPeriod = 3.0f;
+	public AudioClip babyLaugh;
+	public GameObject fart;
 
 	public Boundary boundary;
 
@@ -105,8 +107,10 @@ public class PlayerController : MonoBehaviour
         _dashCooldown = _dashNext > Time.time ? _dashNext - Time.time : 0.0f;
         _playerIsDashing = ( _dashCooldown > 0.1f );
 
+
         Game_Ctrl.UpdateDashCooldown(_dashCooldown); 
 	}
+
 
 
     bool CanDash()
@@ -114,10 +118,14 @@ public class PlayerController : MonoBehaviour
         if (_moveHorizontal > 0.01 || _moveHorizontal < -0.01) 
 	    {
             if ( Time.time > _dashNext )
+				GetComponent<AudioSource>().PlayOneShot(babyLaugh);
+			Destroy(Instantiate(fart),3);
                 return true;
         }
         return false;
     }
+
+
 
 
     void StartDash()

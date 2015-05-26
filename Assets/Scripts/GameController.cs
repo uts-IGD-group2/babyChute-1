@@ -115,7 +115,8 @@ public class GameController : MonoBehaviour {
                      spawnValues.z
                      );
 				Quaternion spawnRotation = Quaternion.identity;
-				Instantiate( hazard, spawnPosition, spawnRotation );
+				Destroy(Instantiate( hazard, spawnPosition, spawnRotation ),11);
+				//Instantiate( hazard, spawnPosition, spawnRotation );
 				yield return new WaitForSeconds( spawnWait );
 			}
 			yield return new WaitForSeconds( waveWait );
@@ -125,6 +126,10 @@ public class GameController : MonoBehaviour {
 				break;
 			}
 		}
+	}
+	void OnTriggerExit (Collider other) 
+	{
+		Destroy(other.gameObject);
 	}
 
 
