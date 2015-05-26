@@ -3,19 +3,23 @@ using System.Collections;
 
 
 public class StartScreenController : MonoBehaviour {
-    private GameObject StartScreen;
-    private GameObject Story1;
-    private GameObject Story2;
-    private GameObject Story3;
+    public GameObject StartScreen;
+    public GameObject Story1;
+    public GameObject Story2;
+
+    public GameObject Story3;
+    public GameObject craneObject;
+    public GameObject clothObject;
+
+    Vector3[] keysFrames = 
+        new[] { 
+            new Vector3 ( 6, 0, 0 ), 
+            new Vector3 ( 3,-8, 0 ) 
+        };
 
 
 	void Start()
 	{
-        StartScreen = GameObject.Find("StartScreen");
-		Story1 = GameObject.Find ("Story1");
-		Story2 = GameObject.Find ("Story2");
-		Story3 = GameObject.Find ("Story3");
-		
 		this.enabled   = true;
         Story1.SetActive(false);
         Story2.SetActive(false);
@@ -23,19 +27,13 @@ public class StartScreenController : MonoBehaviour {
 	}
 
 
-	public void RestartGame() 
-	{
-		Application.LoadLevel (2); // The first plyable scene
-	}
-	
-
-	public void StartStory() 
+	public void Play() 
 	{
 
 		Invoke ("loadStory1", 1);
 		Invoke ("loadStory2", 5);
 		Invoke ("loadStory3", 10);
-        Invoke( "StartGame", 15);
+        Invoke ("loadGame", 14);
 	}	
 
 	void loadStory1() {
@@ -51,10 +49,52 @@ public class StartScreenController : MonoBehaviour {
 	void loadStory3() {
         Story3.SetActive(true);
         Story2.SetActive(false);
+
+        Invoke("move1", 0);
+        Invoke("move2", 3);
+
+        Invoke("StartGame", 5);
 	}
+
+    void move1() {
+        iTween.MoveTo ( craneObject, keysFrames[0] , 20 );
+    }
+
+    void move2() {
+        iTween.MoveTo( clothObject, keysFrames[1], 10);
+    }
+
+    public void RestartGame()
+    {
+        Application.LoadLevel(1);
+    }
 
 	void StartGame() {
         Application.LoadLevel(Application.loadedLevel + 1);
 	}
+
 }
 
+
+
+//void Start () {
+
+//        craneObject = GameObject.Find ("crane");
+//        craneSprite = craneObject.GetComponent<SpriteRenderer> ();
+//        clothObject = GameObject.Find ("cloth");
+//        clothSprite = clothObject.GetComponent<SpriteRenderer> ();
+
+
+
+//    void loadStory3() {
+//        Story2.enabled = false;
+//        Story3.enabled = true;
+
+//        craneSprite.enabled = true;
+//        clothSprite.enabled = true;
+//    }
+
+
+//    }
+
+//}

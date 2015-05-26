@@ -139,7 +139,7 @@ public class PlayerController : MonoBehaviour
 
 	float PlayerMagUpdate()
     {
-        if ( Game_Ctrl.StageOverIs() && !Game_Ctrl.d_WIN_LOSE_OFF )
+        if (Game_Ctrl.StageIsOver() && !Game_Ctrl.d_WIN_LOSE_OFF)
             return 0.0f;
         else if ( _isInvulnerable )
             return 0.5f;
