@@ -8,6 +8,6 @@ public class UIManagersScript : MonoBehaviour {
 	}
 
 	public void RestartGame() {
-		Application.LoadLevel ("stage_1");
+		Application.LoadLevel ("MenuStart");
 	}
 }
