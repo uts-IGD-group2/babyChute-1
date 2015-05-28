@@ -4,9 +4,9 @@ using System.Collections;
 
 public class StartScreenController : MonoBehaviour {
     public GameObject StartScreen;
-    public GameObject Story1;
+    public GameObject Story1a;
+	public GameObject Story1b;
     public GameObject Story2;
-
     public GameObject Story3;
     public GameObject craneObject;
     public GameObject clothObject;
@@ -14,14 +14,15 @@ public class StartScreenController : MonoBehaviour {
     Vector3[] keysFrames = 
         new[] { 
             new Vector3 ( 6, 0, 0 ), 
-            new Vector3 ( 3,-8, 0 ) 
+            new Vector3 ( 2,-8, 0 ) 
         };
 
 
 	void Start()
 	{
-		this.enabled   = true;
-        Story1.SetActive(false);
+		this.enabled = true;
+        Story1a.SetActive(false);
+		Story1b.SetActive(false);
         Story2.SetActive(false);
         Story3.SetActive(false);
 	}
@@ -30,20 +31,26 @@ public class StartScreenController : MonoBehaviour {
 	public void Play() 
 	{
 
-		Invoke ("loadStory1", 1);
-		Invoke ("loadStory2", 5);
-		Invoke ("loadStory3", 10);
-        Invoke ("loadGame", 14);
+		Invoke ("loadStory1a", 1);
+		Invoke ("loadStory1b", 4);
+		Invoke ("loadStory2", 8);
+		Invoke ("loadStory3", 13);
+        Invoke ("loadGame", 17);
 	}	
 
-	void loadStory1() {
-        Story1.SetActive(true);
+	void loadStory1a() {
+        Story1a.SetActive(true);
         StartScreen.SetActive(false);
+	}
+
+	void loadStory1b() {
+		Story1b.SetActive(true);
+		Story1a.SetActive(false);
 	}
 	
 	void loadStory2() {
         Story2.SetActive(true);
-        Story1.SetActive(false);
+        Story1b.SetActive(false);
 	}
 	
 	void loadStory3() {
@@ -57,7 +64,7 @@ public class StartScreenController : MonoBehaviour {
 	}
 
     void move1() {
-        iTween.MoveTo ( craneObject, keysFrames[0] , 20 );
+        iTween.MoveTo ( craneObject, keysFrames[0] , 30 );
     }
 
     void move2() {
