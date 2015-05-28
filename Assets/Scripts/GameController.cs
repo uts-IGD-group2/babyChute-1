@@ -31,7 +31,8 @@ public class GameController : MonoBehaviour {
 	public Text lifeText;
     public SpriteRenderer lifeDecal;
 	public Text timerText;
-	public Text dashCooldownText;
+	public Image boostBar;
+	public Text  d_cooldownText;
     
 
 	// Game play state
@@ -131,12 +132,15 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
-
-	public void DashCooldownUpdate( float dashCooldown ) 
+	void DashCooldownUpdate(float dashCooldown) 
 	{
-		dashCooldownText.text = "t2Dash: " + dashCooldown;
-	}
+		boostBar.fillAmount -= dashCooldown;
+		boostBar.fillAmount += 0.015f;
 
+		if (d_DEBUG)
+			d_cooldownText.text = "t2Dash: " + dashCooldown;
+		
+	}
 
 	/// <summary> /// --- LIFE methods --- /// </summary>
 	public void LifeRemove ( int lifeValue=1 ) {

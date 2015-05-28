@@ -13,8 +13,10 @@ public class PlayerController : MonoBehaviour
 {
 	public float gravity;
 	public float playerSpeed;
-	public float dashSpeed = 6;
-	public float dashCooldownPeriod = 3.0f;
+	public  float dashSpeed    = 6;
+	public  float dashSuckRate = 1.0f;
+	private float _dashPool = 1.0f;
+	public  float dashRechargeRate = 3.0f;
 	public float invulnerableCooldownPeriod = 3.0f;
 
 	public AudioClip babyLaugh;
@@ -59,8 +61,7 @@ public class PlayerController : MonoBehaviour
 		_moveVertical   = Input.GetAxis ("Vertical");
         // Player want's to use dash ability
         if (Input.GetKeyDown(KeyCode.Space))
-			if ( DashCan() )
-				DashStart();
+			DashAttempt();
 
 
         Vector3 movement = new Vector3(_moveHorizontal, _moveVertical * 50, 0.0f);
@@ -118,29 +119,30 @@ public class PlayerController : MonoBehaviour
 	}
 	
 
+	void DashAttempt()
+	{
+		if (_moveHorizontal < 0.01 || _moveHorizontal > -0.01) 
+			return
+		
+		if ( _dashPool > 0 ) {
+			GetComponent<AudioSource>().PlayOneShot(babyLaugh);
+			Destroy(Instantiate(fart),3);
+				_dashPool -= dashSuckRate;
+		}
+	}
+
 
 	// Custom methods
 	void DashUpdate() 
 	{
-        _dashCooldown = _dashNext > Time.time ? _dashNext - Time.time : 0.0f;
-        _playerIsDashing = ( _dashCooldown > 0.1f );
+		_dashCooldown = _dashNext > Time.time ? _dashNext - Time.time : 0.0f;
 
-		Game_Ctrl.DashCooldownUpdate(_dashCooldown); 
+        _playerIsDashing = ( _dashCooldown > 0.01f );
+
+		Game_Ctrl.DashCooldownUpdate(_dashPool); 
 	}
 
 
-	bool DashCan()
-    {
-        if (_moveHorizontal > 0.01 || _moveHorizontal < -0.01) 
-	    {
-            if ( Time.time > _dashNext ) {
-				GetComponent<AudioSource>().PlayOneShot(babyLaugh);
-				Destroy(Instantiate(fart),3);
-                return true;
-			}
-        }
-        return false;
-    }
 
 
 	void DashStart()
