@@ -4,11 +4,12 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Enemy
+  - Bird
   - RainCloud
   - Diaper
-  - Ballon
+  - Balloon
   - Branch
+  - Ballon
   layers:
   - Default
   - TransparentFX

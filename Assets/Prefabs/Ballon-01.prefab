@@ -14,7 +14,7 @@ GameObject:
   - 60: {fileID: 6018644}
   m_Layer: 0
   m_Name: Ballon-01
-  m_TagString: Ballon
+  m_TagString: Balloon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

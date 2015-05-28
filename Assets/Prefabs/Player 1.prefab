@@ -507,9 +507,11 @@ MonoBehaviour:
   playerSpeed: 3
   dashSpeed: 6
   dashCooldownPeriod: 2
-  invulnerableCooldownPeriod: 3
+  invulnerableCooldownPeriod: 0
   babyLaugh: {fileID: 8300000, guid: ffb5ad2a0ad0d451785a752854d87fe1, type: 3}
-  branchBreak: {fileID: 0}
+  branchBreak: {fileID: 8300000, guid: f654a1179b82843af9b1653d0310cd83, type: 3}
+  balloonPop: {fileID: 8300000, guid: 5eb6cfcc634f44b129f647dc98a792a5, type: 3}
+  birdSqwark: {fileID: 8300000, guid: 706d8b7c15d954b94af810f919c054b9, type: 3}
   fart: {fileID: 186724, guid: d00b3bcdd6e4f4e9aa1c101c7440dc77, type: 2}
   boundary:
     xMin: -3.5

@@ -19,6 +19,8 @@ public class PlayerController : MonoBehaviour
 
 	public AudioClip babyLaugh;
 	public AudioClip branchBreak;
+	public AudioClip balloonPop;
+	public AudioClip birdSqwark;
 	public GameObject fart;
 
 	public Boundary boundary;
@@ -88,13 +90,11 @@ public class PlayerController : MonoBehaviour
         //if (Game_Ctrl.d_DEBUG)
             print("player trig: " + other.tag);
 
-        if (other.tag == "Enemy") {
-			if (!_isInvulnerable) {
-				if (Game_Ctrl.d_DEBUG) 
-					print ("TakeHit");
-                
-				TakeHit ();
-			}
+        if (other.tag == "Bird") {
+			TakeHit ();
+			other.GetComponent<Rigidbody2D>().velocity = transform.up * -5;
+			GetComponent<AudioSource>().PlayOneShot(birdSqwark);
+	
 		} else if (other.tag == "Branch") {
 
 			TakeHit();
@@ -102,6 +102,12 @@ public class PlayerController : MonoBehaviour
 			Destroy(other.gameObject);
 		}
 
+		else if (other.tag == "Balloon") {
+			
+			TakeHit();
+			GetComponent<AudioSource>().PlayOneShot(balloonPop);
+			Destroy(other.gameObject);
+		}
 
         else if( other.tag == "Diaper" )
             DiaperCollect(other);

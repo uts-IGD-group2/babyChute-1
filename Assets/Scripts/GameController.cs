@@ -71,7 +71,8 @@ public class GameController : MonoBehaviour {
         keyPromptText.text = "";
 		gameOverText.text = "";
 		
-        _timeLeft = timeForWin;
+	
+		_timeLeft = timeForWin;
 		TimeleftUpdate ( );
 
 		//		SpawnWaves ();
@@ -222,10 +223,12 @@ public class GameController : MonoBehaviour {
 	{
         _stageWin = false;
 
-		if ( Application.loadedLevel == Application.levelCount-1 )
-			Application.LoadLevel ( Application.levelCount );
-		else
-			Application.LoadLevel ( Application.loadedLevel + 1 );
+		if (Application.loadedLevel == Application.levelCount - 1)
+			Application.LoadLevel (Application.levelCount);
+		else {
+			Application.LoadLevel (Application.loadedLevel + 1);
+
+		}
 	}
 
 
@@ -235,8 +238,9 @@ public class GameController : MonoBehaviour {
 		gameOverText.text = "Game Over!";
         keyPromptText.text = "Press 'R' for Restart";
 
-        if ( Input.GetKeyDown(KeyCode.R) )
-            Application.LoadLevel(Application.loadedLevel);
+        if (Input.GetKeyDown (KeyCode.R)) {
+			Application.LoadLevel (Application.loadedLevel);
+		}
 	}
 
 
