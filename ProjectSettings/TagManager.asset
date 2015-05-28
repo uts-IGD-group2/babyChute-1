@@ -8,6 +8,7 @@ TagManager:
   - RainCloud
   - Diaper
   - Ballon
+  - Branch
   layers:
   - Default
   - TransparentFX

@@ -10,6 +10,16 @@ public class GameController : MonoBehaviour {
 	public bool d_WIN_LOSE_OFF;
     public bool d_DEBUG;
 
+
+	// Paramaters for Enemies
+	public GameObject[] hazards;
+	public Vector3 spawnValues;
+	public int hazardCount;
+	public float spawnWait;
+	public float startWait;
+	public float waveWait;
+
+
 	// Paramaters for Player
 	public float timeForWin = 30;
 	public int  playerLives = 3;
@@ -63,6 +73,9 @@ public class GameController : MonoBehaviour {
 		
         _timeLeft = timeForWin;
 		TimeleftUpdate ( );
+
+		//		SpawnWaves ();
+		StartCoroutine ( SpawnWaves () );
 	}
 
 	void Update () {
@@ -86,6 +99,37 @@ public class GameController : MonoBehaviour {
         if ( Input.GetKeyDown(KeyCode.K) )
             LifeRemove();
 	}
+
+
+	
+	// Spawn enemies
+	IEnumerator SpawnWaves () 
+	{
+		yield return new WaitForSeconds( startWait );
+		while (true) 
+		{
+			for (int i = 0; i < hazardCount; i++) 
+			{
+				GameObject hazard = hazards [Random.Range (0, hazards.Length)];
+				Vector3 spawnPosition = new Vector3 ( 
+				                                     Random.Range( -spawnValues.x, spawnValues.x ), 
+				                                     spawnValues.y, 
+				                                     spawnValues.z
+				                                     );
+				Quaternion spawnRotation = Quaternion.identity;
+				Destroy(Instantiate( hazard, spawnPosition, spawnRotation ),11);
+				//Instantiate( hazard, spawnPosition, spawnRotation );
+				yield return new WaitForSeconds( spawnWait );
+			}
+			yield return new WaitForSeconds( waveWait );
+			
+			if (_stageLose || _timeLeft < 0 ) 
+			{
+				break;
+			}
+		}
+	}
+
 
 	public void DashCooldownUpdate( float dashCooldown ) 
 	{

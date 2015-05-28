@@ -13,9 +13,13 @@ public class PlayerController : MonoBehaviour
 {
 	public float gravity;
 	public float playerSpeed;
-	public float dashSpeed = 15;
+	public float dashSpeed = 6;
 	public float dashCooldownPeriod = 3.0f;
 	public float invulnerableCooldownPeriod = 3.0f;
+
+	public AudioClip babyLaugh;
+	public AudioClip branchBreak;
+	public GameObject fart;
 
 	public Boundary boundary;
 
@@ -84,16 +88,20 @@ public class PlayerController : MonoBehaviour
         //if (Game_Ctrl.d_DEBUG)
             print("player trig: " + other.tag);
 
-        if ( other.tag == "Enemy" || other.tag == "Branch" )
-        {
-            if( !_isInvulnerable )
-            {
-                if (Game_Ctrl.d_DEBUG) 
-                    print("TakeHit");
+        if (other.tag == "Enemy") {
+			if (!_isInvulnerable) {
+				if (Game_Ctrl.d_DEBUG) 
+					print ("TakeHit");
                 
-                TakeHit();
-            }
-        }
+				TakeHit ();
+			}
+		} else if (other.tag == "Branch") {
+
+			TakeHit();
+			GetComponent<AudioSource>().PlayOneShot(branchBreak);
+			Destroy(other.gameObject);
+		}
+
 
         else if( other.tag == "Diaper" )
             DiaperCollect(other);
@@ -119,8 +127,11 @@ public class PlayerController : MonoBehaviour
     {
         if (_moveHorizontal > 0.01 || _moveHorizontal < -0.01) 
 	    {
-            if ( Time.time > _dashNext )
+            if ( Time.time > _dashNext ) {
+				GetComponent<AudioSource>().PlayOneShot(babyLaugh);
+				Destroy(Instantiate(fart),3);
                 return true;
+			}
         }
         return false;
     }
