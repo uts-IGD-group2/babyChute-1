@@ -452,7 +452,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   amplitude: .100000001
-  direction: 1
+  direction_: 0
 --- !u!114 &11440790
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -465,7 +465,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   amplitude: .5
-  direction: 0
+  direction_: 0
 --- !u!114 &11441618
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -478,7 +478,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   amplitude: 0
-  direction: 0
+  direction_: 0
 --- !u!114 &11455060
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -491,7 +491,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   amplitude: .100000001
-  direction: 3
+  direction_: 0
 --- !u!114 &11473576
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -504,7 +504,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   amplitude: 1
-  direction: 0
+  direction_: 0
 --- !u!114 &11478616
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -517,7 +517,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   amplitude: .100000001
-  direction: 0
+  direction_: 0
 --- !u!114 &11489498
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -530,7 +530,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   amplitude: .100000001
-  direction: 0
+  direction_: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

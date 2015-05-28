@@ -135,6 +135,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scrollSpeed: 2
   tileSizeY: 30
+  clouds:
+  - {fileID: 0}
+  spawnPosRange: {x: 5, y: -5, z: 0}
+  cloudCount: 1
+  spawnWait: 5
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
