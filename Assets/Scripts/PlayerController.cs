@@ -86,16 +86,19 @@ public class PlayerController : MonoBehaviour
 		if ( _isInvulnerable )
 			InvulnerabilityUpdate();
 
-		rainCooldown -= Time.deltaTime;
+
+
+		if (Application.loadedLevel == 4) {
+			rainCooldown -= Time.deltaTime;
 	
 			
-		if( rainCooldown <= 0){
-			BackgroundRepeater.main.scrollSpeed += 2;
-			EnemyKinematics.main.speed += 3;
+			if (rainCooldown <= 0) {
+				BackgroundRepeater.main.scrollSpeed += 2;
+				EnemyKinematics.main.speed += 3;
 				rainCooldown += Time.deltaTime + 3f;
 	
 			}
-
+		}
 	
 		_rainEffect = _rainEffect + 0.05f;
 	}
