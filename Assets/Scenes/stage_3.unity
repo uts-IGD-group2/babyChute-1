@@ -229,7 +229,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 185ba17604ff0f740bee8b092f90aee5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
+  speed: 5
 --- !u!50 &570922771
 Rigidbody2D:
   m_ObjectHideFlags: 0
@@ -541,7 +541,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11475996, guid: 009ea17243b35cc46a407887db794cbf, type: 2}
       propertyPath: spawnWait
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 11475996, guid: 009ea17243b35cc46a407887db794cbf, type: 2}
       propertyPath: spawnPosRange.y

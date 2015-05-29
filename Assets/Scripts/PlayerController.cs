@@ -14,7 +14,9 @@ public class PlayerController : MonoBehaviour
 	public float gravity;
 	public float playerSpeed;
 	public float dashSpeed = 6;
-	public float dashCooldownPeriod = 3.0f;
+
+	public  float dashSuckRate = 0.1f;
+
 	public float invulnerableCooldownPeriod = 3.0f;
 
 	public AudioClip babyLaugh;
@@ -30,8 +32,7 @@ public class PlayerController : MonoBehaviour
 
 	private float _moveHorizontal;
 	private float _moveVertical;
-
-	private float _dashNext;
+	
 	private float _dashCooldown;
 
 	private bool  _isInvulnerable;
@@ -51,6 +52,7 @@ public class PlayerController : MonoBehaviour
 	void Start () 
 	{
 		_isInvulnerable = false;
+
 		Game_Ctrl = FindObjectOfType( typeof(GameController) ) as GameController;
 
 	}
@@ -60,12 +62,15 @@ public class PlayerController : MonoBehaviour
 		_moveHorizontal = Input.GetAxis ("Horizontal");
 		_moveVertical   = Input.GetAxis ("Vertical");
         // Player want's to use dash ability
-        if (Input.GetKeyDown(KeyCode.Space))
-			if ( DashCan() )
-				DashStart();
+		if (Input.GetKeyDown(KeyCode.Space))
+		{
+			if ( _moveHorizontal > 0.01 || _moveHorizontal < -0.01 )
+				DashTry();
+		}
 
 
         Vector3 movement = new Vector3(_moveHorizontal, _moveVertical * 50, 0.0f);
+		// check to see if player is dashing
 		float speedMag = PlayerMagUpdate();
 
         GetComponent<Rigidbody2D>().velocity = movement * speedMag;
@@ -79,8 +84,6 @@ public class PlayerController : MonoBehaviour
 
 	void Update() 
 	{
-		DashUpdate();
-
 		// check invulnrability state
 		if ( _isInvulnerable )
 			InvulnerabilityUpdate();
@@ -124,39 +127,26 @@ public class PlayerController : MonoBehaviour
 
 
 	// Custom methods
-	void DashUpdate() 
+	void DashTry()
 	{
-        _dashCooldown = _dashNext > Time.time ? _dashNext - Time.time : 0.0f;
-        _playerIsDashing = ( _dashCooldown > 0.1f );
-
-		Game_Ctrl.DashCooldownUpdate(_dashCooldown); 
+		if ( Game_Ctrl.DashCanPlayer() )
+		{
+			Game_Ctrl.DashUpdate(dashSuckRate);
+			
+			GetComponent<AudioSource>().PlayOneShot(babyLaugh);
+			Destroy(Instantiate(fart), 3);
+			_playerIsDashing = true;
+		}
+		else
+		{
+			_playerIsDashing = false;
+		}
 	}
 
-
-	bool DashCan()
-    {
-        if (_moveHorizontal > 0.01 || _moveHorizontal < -0.01) 
-	    {
-            if ( Time.time > _dashNext ) {
-				GetComponent<AudioSource>().PlayOneShot(babyLaugh);
-				Destroy(Instantiate(fart),3);
-                return true;
-			}
-        }
-        return false;
-    }
-
-
-	void DashStart()
-    {
-        _dashNext = Time.time + dashCooldownPeriod;
-        _playerIsDashing = true;
-
-        // TODO: have burp/fart effect
-        //				Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
-        //				GetComponent<AudioSource>().Play ()
-    }
-
+	bool DashingIsPlayer ( )
+	{
+		return _dashCooldown > 0.01f;
+	}
 
 	float PlayerMagUpdate()
     {
@@ -165,7 +155,8 @@ public class PlayerController : MonoBehaviour
         else if ( _isInvulnerable )
             return 0.5f;
 		else if ( _rainLevel )
-			return 1 + _rainEffect;
+			return 1.0f;
+			//return 1 + _rainEffect;
 
         float mag = _playerIsDashing ? dashSpeed : playerSpeed;
         return mag;
@@ -212,7 +203,7 @@ public class PlayerController : MonoBehaviour
 			GetComponent<Renderer>().enabled = true;
 			_isInvulnerable = false;
 		}
-        if (Game_Ctrl.d_DEBUG)  print("isInvulnerable: " + _isInvulnerable); 
+//        if (Game_Ctrl.d_DEBUG)  print("isInvulnerable: " + _isInvulnerable); 
 	
     }
 
