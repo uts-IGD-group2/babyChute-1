@@ -15,7 +15,7 @@ GameObject:
   - 60: {fileID: 6008602}
   m_Layer: 0
   m_Name: Bird-01
-  m_TagString: Enemy
+  m_TagString: Bird
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -112,7 +112,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5dca11724cb963c45a8cb8844b7cf032, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
+  speed: 5
 --- !u!114 &11454636
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -13,9 +13,15 @@ public class PlayerController : MonoBehaviour
 {
 	public float gravity;
 	public float playerSpeed;
-	public float dashSpeed = 15;
+	public float dashSpeed = 6;
 	public float dashCooldownPeriod = 3.0f;
 	public float invulnerableCooldownPeriod = 3.0f;
+
+	public AudioClip babyLaugh;
+	public AudioClip branchBreak;
+	public AudioClip balloonPop;
+	public AudioClip birdSqwark;
+	public GameObject fart;
 
 	public Boundary boundary;
 
@@ -31,7 +37,9 @@ public class PlayerController : MonoBehaviour
 	private bool  _isInvulnerable;
     private float _invulnerableCooldown;
 
-	private bool  _WetNappy;
+	//private bool  _WetNappy;
+	public bool _rainLevel;
+	private float _rainEffect;
 
     private GameController Game_Ctrl;
 
@@ -76,6 +84,8 @@ public class PlayerController : MonoBehaviour
 		// check invulnrability state
 		if ( _isInvulnerable )
 			InvulnerabilityUpdate();
+
+		_rainEffect = _rainEffect + 0.05f;
 	}
 
 
@@ -84,16 +94,24 @@ public class PlayerController : MonoBehaviour
         //if (Game_Ctrl.d_DEBUG)
             print("player trig: " + other.tag);
 
-        if ( other.tag == "Enemy" || other.tag == "Branch" )
-        {
-            if( !_isInvulnerable )
-            {
-                if (Game_Ctrl.d_DEBUG) 
-                    print("TakeHit");
-                
-                TakeHit();
-            }
-        }
+        if (other.tag == "Bird") {
+			TakeHit ();
+			other.GetComponent<Rigidbody2D>().velocity = transform.up * -5;
+			GetComponent<AudioSource>().PlayOneShot(birdSqwark);
+	
+		} else if (other.tag == "Branch") {
+
+			TakeHit();
+			GetComponent<AudioSource>().PlayOneShot(branchBreak);
+			Destroy(other.gameObject);
+		}
+
+		else if (other.tag == "Balloon") {
+			
+			TakeHit();
+			GetComponent<AudioSource>().PlayOneShot(balloonPop);
+			Destroy(other.gameObject);
+		}
 
         else if( other.tag == "Diaper" )
             DiaperCollect(other);
@@ -119,8 +137,11 @@ public class PlayerController : MonoBehaviour
     {
         if (_moveHorizontal > 0.01 || _moveHorizontal < -0.01) 
 	    {
-            if ( Time.time > _dashNext )
+            if ( Time.time > _dashNext ) {
+				GetComponent<AudioSource>().PlayOneShot(babyLaugh);
+				Destroy(Instantiate(fart),3);
                 return true;
+			}
         }
         return false;
     }
@@ -139,12 +160,12 @@ public class PlayerController : MonoBehaviour
 
 	float PlayerMagUpdate()
     {
-        if ( Game_Ctrl.StageOverIs() && !Game_Ctrl.d_WIN_LOSE_OFF )
+        if (Game_Ctrl.StageIsOver() && !Game_Ctrl.d_WIN_LOSE_OFF)
             return 0.0f;
         else if ( _isInvulnerable )
             return 0.5f;
-		else if ( _WetNappy )
-			return 0.5f;
+		else if ( _rainLevel )
+			return 1 + _rainEffect;
 
         float mag = _playerIsDashing ? dashSpeed : playerSpeed;
         return mag;
@@ -165,7 +186,8 @@ public class PlayerController : MonoBehaviour
     void DiaperCollect(Collider2D other)
     {
         DestroyObject(other.gameObject);
-		_WetNappy = false;
+		//_WetNappy = false;
+		_rainEffect = 0;
         //TODO: remove negative effect
     }
 
@@ -173,7 +195,7 @@ public class PlayerController : MonoBehaviour
     void RainCloudCollide(Collider2D other)
     {
         //TODO: make RainCloud rain
-		_WetNappy = true;
+		//_WetNappy = true;
     }
 
 
