@@ -11,6 +11,8 @@ public class BackgroundRepeater : MonoBehaviour
     public int cloudCount = 10;
     public float spawnWait;
 
+	public static BackgroundRepeater main;
+
 	private Vector3 startPosition;
 	
 	void Start ()
@@ -19,12 +21,27 @@ public class BackgroundRepeater : MonoBehaviour
 
         StartCoroutine(SpawnClouds());
 	}
+
+	void Start (float speed)
+	{
+		scrollSpeed = speed;
+
+		startPosition = transform.position;
+		
+		StartCoroutine(SpawnClouds());
+	}
 	
 	void Update ()
 	{
 		float newPosition = Mathf.Repeat(Time.time * scrollSpeed, tileSizeY);
 		transform.position = startPosition + Vector3.up * newPosition;
 	}
+
+	void Awake () 
+	{
+		main = this;    
+	}
+
 
     // Spawn enemies
     IEnumerator SpawnClouds()

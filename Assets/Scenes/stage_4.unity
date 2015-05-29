@@ -130,6 +130,10 @@ Prefab:
       propertyPath: m_IsKinematic
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 11479306, guid: d5b67535a4e7b6e469c8304ca78d4285, type: 2}
+      propertyPath: speed
+      value: 20
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d5b67535a4e7b6e469c8304ca78d4285, type: 2}
   m_IsPrefabParent: 0
@@ -302,11 +306,11 @@ Prefab:
     - target: {fileID: 11483524, guid: 18c9572cf41c04d799d778b15da6f321, type: 2}
       propertyPath: hazards.Array.data[1]
       value: 
-      objectReference: {fileID: 122600, guid: d5b67535a4e7b6e469c8304ca78d4285, type: 2}
+      objectReference: {fileID: 1860571353}
     - target: {fileID: 11483524, guid: 18c9572cf41c04d799d778b15da6f321, type: 2}
       propertyPath: hazards.Array.data[2]
       value: 
-      objectReference: {fileID: 122600, guid: d5b67535a4e7b6e469c8304ca78d4285, type: 2}
+      objectReference: {fileID: 1872871757}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 18c9572cf41c04d799d778b15da6f321, type: 2}
   m_IsPrefabParent: 0
@@ -409,6 +413,10 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11475996, guid: 009ea17243b35cc46a407887db794cbf, type: 2}
       propertyPath: spawnWait
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 190548, guid: 009ea17243b35cc46a407887db794cbf, type: 2}
+      propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -536,7 +544,15 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1d19ce745ba4874499ecb80da2168e3e, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &1860571353
+GameObject:
+  m_PrefabParentObject: {fileID: 175250, guid: 1d19ce745ba4874499ecb80da2168e3e, type: 2}
+  m_PrefabInternal: {fileID: 1620084809}
 --- !u!4 &1864957345
 Transform:
   m_PrefabParentObject: {fileID: 447450, guid: 9631538f6879e4e4197a68e845573864, type: 2}
+  m_PrefabInternal: {fileID: 790236924}
+--- !u!1 &1872871757
+GameObject:
+  m_PrefabParentObject: {fileID: 125362, guid: 9631538f6879e4e4197a68e845573864, type: 2}
   m_PrefabInternal: {fileID: 790236924}

@@ -22,9 +22,10 @@ public class PlayerController : MonoBehaviour
 	public AudioClip balloonPop;
 	public AudioClip birdSqwark;
 	public GameObject fart;
-
 	public Boundary boundary;
 
+	public float rainCooldown = 3f;
+	private bool gotDiaper = false;
 	// Internal attributes to keep track of the player state
     private bool _playerIsDashing;
 
@@ -85,6 +86,17 @@ public class PlayerController : MonoBehaviour
 		if ( _isInvulnerable )
 			InvulnerabilityUpdate();
 
+		rainCooldown -= Time.deltaTime;
+	
+			
+		if( rainCooldown <= 0){
+			BackgroundRepeater.main.scrollSpeed += 2;
+			EnemyKinematics.main.speed += 3;
+				rainCooldown += Time.deltaTime + 3f;
+	
+			}
+
+	
 		_rainEffect = _rainEffect + 0.05f;
 	}
 
@@ -96,29 +108,27 @@ public class PlayerController : MonoBehaviour
 
         if (other.tag == "Bird") {
 			TakeHit ();
-			other.GetComponent<Rigidbody2D>().velocity = transform.up * -5;
-			GetComponent<AudioSource>().PlayOneShot(birdSqwark);
+			other.GetComponent<Rigidbody2D> ().velocity = transform.up * -5;
+			GetComponent<AudioSource> ().PlayOneShot (birdSqwark);
 	
 		} else if (other.tag == "Branch") {
 
-			TakeHit();
-			GetComponent<AudioSource>().PlayOneShot(branchBreak);
-			Destroy(other.gameObject);
-		}
-
-		else if (other.tag == "Balloon") {
+			TakeHit ();
+			GetComponent<AudioSource> ().PlayOneShot (branchBreak);
+			Destroy (other.gameObject);
+		} else if (other.tag == "Balloon") {
 			
-			TakeHit();
-			GetComponent<AudioSource>().PlayOneShot(balloonPop);
-			Destroy(other.gameObject);
+			TakeHit ();
+			GetComponent<AudioSource> ().PlayOneShot (balloonPop);
+			Destroy (other.gameObject);
+		} else if (other.tag == "Diaper") {
+			DiaperCollect (other);
+		EnemyKinematics.main.speed = 1;
+			BackgroundRepeater.main.scrollSpeed = 2;
+			rainCooldown = Time.deltaTime + 3f;
 		}
-
-        else if( other.tag == "Diaper" )
-            DiaperCollect(other);
-        
-        else if( other.tag == "RainCloud" )
-            RainCloudCollide(other);
-
+		else if (other.tag == "RainCloud")
+			RainCloudCollide (other);
 	}
 	
 
