@@ -21,9 +21,17 @@ public class EnemyEntity  : MonoBehaviour {
 	}
 
 
-	public void HitPlayer() 
+	public void PopMe() 
 	{
 		AudioSource.PlayClipAtPoint(SoundOnDeath, transform.position);
 		Destroy(this.gameObject);
+	}
+
+
+	public void WackMe() 
+	{
+		AudioSource.PlayClipAtPoint(SoundOnDeath, transform.position);
+		GetComponent<Rigidbody2D>().velocity = transform.up * -5;
+		//Destroy(this.gameObject);
 	}
 }

@@ -93,9 +93,9 @@ public class PlayerController : MonoBehaviour
         if (other.tag == "Bird") {
             TakeHit ();
 			if ( other.GetComponent<EnemyEntity>() )
-				other.GetComponent<EnemyEntity>().HitPlayer();
+				other.GetComponent<EnemyEntity>().WackMe();
 
-            other.GetComponent<Rigidbody2D>().velocity = transform.up * -5;
+            
             GetComponent<AudioSource>().PlayOneShot(birdSqwark);
     
         }
@@ -109,7 +109,7 @@ public class PlayerController : MonoBehaviour
 		{
             TakeHit();
 			if ( other.GetComponent<EnemyEntity>() )
-				other.GetComponent<EnemyEntity>().HitPlayer();
+				other.GetComponent<EnemyEntity>().PopMe();
         }
         else if ( other.tag == "Diaper" )
             DiaperCollect(other);
