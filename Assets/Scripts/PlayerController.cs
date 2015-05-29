@@ -37,7 +37,9 @@ public class PlayerController : MonoBehaviour
 	private bool  _isInvulnerable;
     private float _invulnerableCooldown;
 
-	private bool  _WetNappy;
+	//private bool  _WetNappy;
+	public bool _rainLevel;
+	private float _rainEffect;
 
     private GameController Game_Ctrl;
 
@@ -82,6 +84,8 @@ public class PlayerController : MonoBehaviour
 		// check invulnrability state
 		if ( _isInvulnerable )
 			InvulnerabilityUpdate();
+
+		_rainEffect = _rainEffect + 0.05f;
 	}
 
 
@@ -160,8 +164,8 @@ public class PlayerController : MonoBehaviour
             return 0.0f;
         else if ( _isInvulnerable )
             return 0.5f;
-		else if ( _WetNappy )
-			return 0.5f;
+		else if ( _rainLevel )
+			return 1 + _rainEffect;
 
         float mag = _playerIsDashing ? dashSpeed : playerSpeed;
         return mag;
@@ -182,7 +186,8 @@ public class PlayerController : MonoBehaviour
     void DiaperCollect(Collider2D other)
     {
         DestroyObject(other.gameObject);
-		_WetNappy = false;
+		//_WetNappy = false;
+		_rainEffect = 0;
         //TODO: remove negative effect
     }
 
@@ -190,7 +195,7 @@ public class PlayerController : MonoBehaviour
     void RainCloudCollide(Collider2D other)
     {
         //TODO: make RainCloud rain
-		_WetNappy = true;
+		//_WetNappy = true;
     }
 
 

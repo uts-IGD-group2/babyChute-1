@@ -176,6 +176,14 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 11461240, guid: 7a2f55044eaade3409f7c39c7972fa08, type: 2}
+      propertyPath: _WetNappy
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5075354, guid: 7a2f55044eaade3409f7c39c7972fa08, type: 2}
+      propertyPath: m_Mass
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7a2f55044eaade3409f7c39c7972fa08, type: 2}
   m_IsPrefabParent: 0
