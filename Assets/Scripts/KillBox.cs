@@ -11,19 +11,11 @@ public class KillBox : MonoBehaviour
 		gameController = FindObjectOfType(typeof(GameController)) as GameController;
 	}
 
-	void Update () 
-	{
-	
-	}
-
 	void OnTriggerExit(Collider other) {
-		if(other.gameObject.tag == "Player") 
-        {
+		print("exit: " + other.name);
+		if( other.gameObject.tag == "Player" ) 
 			gameController.StageLose();
-		}
         else
-        {
             Destroy(other.gameObject);
-        }
 	}
 }

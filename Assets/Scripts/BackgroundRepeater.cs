@@ -33,14 +33,15 @@ public class BackgroundRepeater : MonoBehaviour
         {
             for (int i = 0; i < cloudCount; i++)
             {
-                GameObject hazard = clouds[Random.Range(0, clouds.Length)];
+                GameObject cloud = clouds[Random.Range(0, clouds.Length)];
                 Vector3 spawnPosition = new Vector3(
                      Random.Range(-spawnPosRange.x, spawnPosRange.x),
                      spawnPosRange.y,
                      spawnPosRange.z
                      );
                 Quaternion spawnRotation = Quaternion.identity;
-                Instantiate(hazard, spawnPosition, spawnRotation);
+
+				Destroy( Instantiate(cloud, spawnPosition, spawnRotation), 11 );
                 yield return new WaitForSeconds(spawnWait);
             }
         }
