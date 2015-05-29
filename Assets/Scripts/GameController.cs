@@ -196,8 +196,7 @@ public class GameController : MonoBehaviour {
 
 		if ( _timeLeftStage > 0 )
 		{
-			_timeLeftStage -= Time.deltaTime;
-			_timeLeftStage = timeForWin - Time.time;
+			_timeLeftStage = timeForWin - (Time.time - startWait);
 		}
 
         TimeleftUpdate();
