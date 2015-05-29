@@ -77,7 +77,7 @@ public class StartScreenController : MonoBehaviour {
     }
 
 	void StartGame() {
-        Application.LoadLevel(Application.loadedLevel + 1);
+        Application.LoadLevel("stage_1");
 	}
 
 }

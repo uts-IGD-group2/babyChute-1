@@ -21,7 +21,9 @@ public class GameController : MonoBehaviour {
 
 
 	// Paramaters for Player
-	public float timeForWin = 30;
+	//public float timeForWin = 30;
+
+	public float timeLeft = 30.0f;
 	public int  playerLives = 3;
 
 
@@ -48,7 +50,7 @@ public class GameController : MonoBehaviour {
 
 	private int   _score;
 	private int   _lives;
-	private float _timeLeft;
+	//private float _timeLeft;
 
 	private string _Boss_Stage = "stage_5";
 	private string _Story_Win  = "StoryWin";
@@ -72,8 +74,8 @@ public class GameController : MonoBehaviour {
 		gameOverText.text = "";
 		
 	
-		_timeLeft = timeForWin;
-		TimeleftUpdate ( );
+		//_timeLeft = timeForWin;
+		//TimeleftUpdate ( );
 
 		//		SpawnWaves ();
 		StartCoroutine ( SpawnWaves () );
@@ -124,7 +126,8 @@ public class GameController : MonoBehaviour {
 			}
 			yield return new WaitForSeconds( waveWait );
 			
-			if (_stageLose || _timeLeft < 0 ) 
+		//	if (_stageLose || _timeLeft < 0 ) 
+				if (_stageLose || timeLeft < 0 ) 
 			{
 				break;
 			}
@@ -180,11 +183,23 @@ public class GameController : MonoBehaviour {
 	/// <summary> /// --- TIMER methods --- /// </summary>
 	void TimersUpdate() 
     {
-        _timeLeft = timeForWin - Time.time;
-		TimeleftUpdate();
+        //_timeLeft = timeForWin - Time.time;
+		timeLeft -= Time.deltaTime;
+		if(timeLeft < 0)
+		{
+			StageWin();
+		}
+
+		timerText.text = "t2Win: " + timeLeft;
+
+		/*
+		 TimeleftUpdate();
         _stageWin = _timeLeft < 0 ;
+*/
 	}
 
+
+	/*
 
 	void TimeleftUpdate() 
     {
@@ -197,7 +212,7 @@ public class GameController : MonoBehaviour {
 			);
 		timerText.text = "t2Win: " + floatToTime;
 	}
-
+*/
 
 
 	/// <summary> /// --- STAGE methods /// </summary>
