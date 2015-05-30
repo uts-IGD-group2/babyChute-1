@@ -172,7 +172,7 @@ public class PlayerController : MonoBehaviour
         if (Game_Ctrl.StageIsOver() && !Game_Ctrl.d_WIN_LOSE_OFF)
             return 0.0f;
         else if ( _isInvulnerable )
-            return 0.7f;
+			return playerSpeed * 1.0f;
 
 		_playerIsDashing =  _dashPool <= 0.33;
         float mag = _playerIsDashing ? dashSpeed : playerSpeed;

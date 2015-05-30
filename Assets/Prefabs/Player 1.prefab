@@ -437,7 +437,7 @@ MonoBehaviour:
   playerSpeed: 3
   dashSpeed: 6
   dashSuckRate: .100000001
-  invulnerableCooldownPeriod: 0
+  invulnerableCooldownPeriod: 2
   babyLaugh: {fileID: 8300000, guid: ffb5ad2a0ad0d451785a752854d87fe1, type: 3}
   branchBreak: {fileID: 8300000, guid: f654a1179b82843af9b1653d0310cd83, type: 3}
   balloonPop: {fileID: 8300000, guid: 5eb6cfcc634f44b129f647dc98a792a5, type: 3}

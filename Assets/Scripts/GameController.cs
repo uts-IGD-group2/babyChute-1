@@ -100,12 +100,12 @@ public class GameController : MonoBehaviour {
 				StageWin ( );
 		}
 
-        if ( Input.GetKeyDown(KeyCode.Z) )
-            StageWin ( );
-        if ( Input.GetKeyDown(KeyCode.X) )
-            StageNext ( );
-        if ( Input.GetKeyDown(KeyCode.K) )
-            LifeRemove();
+//        if ( Input.GetKeyDown(KeyCode.Z) )
+//            StageWin ( );
+//        if ( Input.GetKeyDown(KeyCode.X) )
+//            StageNext ( );
+//        if ( Input.GetKeyDown(KeyCode.K) )
+//            LifeRemove();
 	}
 
 
