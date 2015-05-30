@@ -165,16 +165,20 @@ public class GameController : MonoBehaviour {
 
 	public bool DashCanPlayer ()
 	{
-		return ( _dashPool >= 1 );
+		return ( _dashPool >= 0.9 );
 		 
 	}
 
 	/// <summary> /// --- LIFE methods --- /// </summary>
 	public void LifeRemove ( int lifeValue=1 ) 
 	{
-		if ( _lives <= 0 )
+		if (_lives <= 1 && !_stageWin) {
+			_lives -= lifeValue;
+			LifeUpdate ( );
 			_stageLose = true;
-		else
+
+		}
+		else if(!_stageWin)
         {
 			_lives -= lifeValue;
 			LifeUpdate ( );
