@@ -33,9 +33,10 @@ public class GameController : MonoBehaviour {
 	public Text lifeText;
     public SpriteRenderer lifeDecal;
 	public Text timerText;
-	public Text dashCooldownText;
-    
-
+	public Image boostBar;
+	public Text  d_cooldownText;
+	
+	
 	// Game play state
 	public Text keyPromptText;
 	public Text gameOverText;
@@ -55,6 +56,8 @@ public class GameController : MonoBehaviour {
 	private string _Boss_Stage = "stage_5";
 	private string _Story_Win  = "StoryWin";
 
+	private float _dashPool;
+
     void Awake()
     {
         _lives = playerLives;
@@ -63,7 +66,8 @@ public class GameController : MonoBehaviour {
 		// DontDestroyOnLoad( this );
     }
 
-	void Start () {
+	void Start () 
+	{
 		_gameOver  = false;
 		_stageLose = false;
 		_stageWin  = false;
@@ -79,12 +83,21 @@ public class GameController : MonoBehaviour {
 
 		//		SpawnWaves ();
 		StartCoroutine ( SpawnWaves () );
+
+		_dashPool = 10.0f;
 	}
 
-	void Update () {
+	void Update () 
+	{
 
 		// Process game time mechanics
 		TimersUpdate ( );
+
+		if ( boostBar.fillAmount < 1 )
+		{
+			_dashPool += 0.01f;
+			boostBar.fillAmount = _dashPool;
+		}
 
 		if ( !d_WIN_LOSE_OFF )
 		{
@@ -135,14 +148,28 @@ public class GameController : MonoBehaviour {
 	}
 
 
-	public void DashCooldownUpdate( float dashCooldown ) 
+	public void DashUpdate(float dashSuckRate) 
 	{
-		dashCooldownText.text = "t2Dash: " + dashCooldown;
+		_dashPool -= dashSuckRate;
+		if ( _dashPool <= 0 )
+			_dashPool = 0.0f;
+	
+		boostBar.fillAmount = _dashPool;
+
+		if (d_DEBUG)
+			d_cooldownText.text = "t2Dash: " + _dashPool;
+		
 	}
 
+	public bool DashCanPlayer ()
+	{
+		return ( _dashPool >= 1 );
+		 
+	}
 
 	/// <summary> /// --- LIFE methods --- /// </summary>
-	public void LifeRemove ( int lifeValue=1 ) {
+	public void LifeRemove ( int lifeValue=1 ) 
+	{
 		if ( _lives <= 0 )
 			_stageLose = true;
 		else
