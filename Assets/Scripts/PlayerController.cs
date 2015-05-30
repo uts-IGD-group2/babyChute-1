@@ -30,11 +30,12 @@ public class PlayerController : MonoBehaviour
 	private bool gotDiaper = false;
 	// Internal attributes to keep track of the player state
     private bool _playerIsDashing;
+	private bool rainSpeed = false;
 
 	private float _moveHorizontal;
 	private float _moveVertical;
 	
-	private float _dashCooldown;
+	private float _dashPool;
 
 	private bool  _isInvulnerable;
     private float _invulnerableCooldown;
@@ -42,6 +43,8 @@ public class PlayerController : MonoBehaviour
 	//private bool  _WetNappy;
 	public bool _rainLevel;
 	private float _rainEffect;
+
+	private float speedMag;
 
     private GameController Game_Ctrl;
 
@@ -56,6 +59,8 @@ public class PlayerController : MonoBehaviour
 
 		Game_Ctrl = FindObjectOfType( typeof(GameController) ) as GameController;
 
+		if (Application.loadedLevel == 4) 
+			BackgroundRepeater.main.scrollSpeed = 2;
 	}
 		
 	void FixedUpdate ()
@@ -67,14 +72,12 @@ public class PlayerController : MonoBehaviour
 		{
 			if ( _moveHorizontal > 0.01 || _moveHorizontal < -0.01 )
 				DashTry();
-
-		
 		}
 
 
         Vector3 movement = new Vector3(_moveHorizontal, _moveVertical * 50, 0.0f);
 		// check to see if player is dashing
-		float speedMag = PlayerMagUpdate();
+		speedMag = PlayerMagUpdate();
 
         GetComponent<Rigidbody2D>().velocity = movement * speedMag;
 		GetComponent<Rigidbody2D>().position = new Vector3 (
@@ -95,21 +98,27 @@ public class PlayerController : MonoBehaviour
 		// Apply Rain level stage attributes.
 		if (Application.loadedLevel == 4) {
 			rainCooldown -= Time.deltaTime;
-			BackgroundRepeater.main.scrollSpeed += 0.03f;
+
+			if(rainSpeed == true)
+			BackgroundRepeater.main.scrollSpeed += 0.01f;
 		
 
 			if (BackgroundRepeater.main.scrollSpeed >= 15)
-				BackgroundRepeater.main.scrollSpeed = 15f;
+				BackgroundRepeater.main.scrollSpeed = 15;
 
 			
 			if (rainCooldown <= 0) {
 				//BackgroundRepeater.main.scrollSpeed += 0.1f;
-				EnemyKinematics.main.speed += 2;
+				rainSpeed = true;
+				EnemyKinematics.main.speed += 1;
 				rainCooldown += Time.deltaTime + 1.0f;
 	
 			}
 		}
-	
+
+		_dashPool += 0.01f;
+		Game_Ctrl.DashUpdate(_dashPool);
+
 		_rainEffect = _rainEffect + 0.05f;
 	}
 
@@ -145,35 +154,27 @@ public class PlayerController : MonoBehaviour
 	// Custom methods
 	void DashTry()
 	{
-		if ( Game_Ctrl.DashCanPlayer() )
+		if ( _dashPool >= 0.9 )
 		{
-			Game_Ctrl.DashUpdate(0);
+			_dashPool = 0;
+			Game_Ctrl.DashUpdate(_dashPool);
 			
 			GetComponent<AudioSource>().PlayOneShot(babyLaugh);
 			Destroy(Instantiate(fart), 3);
-			_playerIsDashing = true;
+			_playerIsDashing = true; 
 		}
-		else
-		{
-			_playerIsDashing = false;
-		}
-	}
-
-	bool DashingIsPlayer ( )
-	{
-		return _dashCooldown > 0.01f;
 	}
 
 	float PlayerMagUpdate()
     {
+
+
         if (Game_Ctrl.StageIsOver() && !Game_Ctrl.d_WIN_LOSE_OFF)
             return 0.0f;
         else if ( _isInvulnerable )
-            return 0.5f;
-		else if ( _rainLevel )
-			return 1.0f;
-			//return 1 + _rainEffect;
+            return 0.7f;
 
+		_playerIsDashing =  _dashPool <= 0.33;
         float mag = _playerIsDashing ? dashSpeed : playerSpeed;
         return mag;
     }

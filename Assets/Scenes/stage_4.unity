@@ -231,6 +231,10 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 11483524, guid: 18c9572cf41c04d799d778b15da6f321, type: 2}
+      propertyPath: hazards.Array.size
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 492414, guid: 18c9572cf41c04d799d778b15da6f321, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -269,6 +273,10 @@ Prefab:
       objectReference: {fileID: 1860571353}
     - target: {fileID: 11483524, guid: 18c9572cf41c04d799d778b15da6f321, type: 2}
       propertyPath: hazards.Array.data[2]
+      value: 
+      objectReference: {fileID: 1969891124}
+    - target: {fileID: 11483524, guid: 18c9572cf41c04d799d778b15da6f321, type: 2}
+      propertyPath: hazards.Array.data[0]
       value: 
       objectReference: {fileID: 1872871757}
     m_RemovedComponents: []
@@ -516,3 +524,7 @@ Transform:
 GameObject:
   m_PrefabParentObject: {fileID: 125362, guid: 9631538f6879e4e4197a68e845573864, type: 2}
   m_PrefabInternal: {fileID: 790236924}
+--- !u!1 &1969891124
+GameObject:
+  m_PrefabParentObject: {fileID: 122600, guid: d5b67535a4e7b6e469c8304ca78d4285, type: 2}
+  m_PrefabInternal: {fileID: 73824481}
