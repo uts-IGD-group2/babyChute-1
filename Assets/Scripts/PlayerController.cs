@@ -92,15 +92,20 @@ public class PlayerController : MonoBehaviour
 			InvulnerabilityUpdate();
 
 
-
+		// Apply Rain level stage attributes.
 		if (Application.loadedLevel == 4) {
 			rainCooldown -= Time.deltaTime;
-	
+			BackgroundRepeater.main.scrollSpeed += 0.03f;
+		
+
+			if (BackgroundRepeater.main.scrollSpeed >= 15)
+				BackgroundRepeater.main.scrollSpeed = 15f;
+
 			
 			if (rainCooldown <= 0) {
-				BackgroundRepeater.main.scrollSpeed += 2;
-				EnemyKinematics.main.speed += 3;
-				rainCooldown += Time.deltaTime + 3f;
+				//BackgroundRepeater.main.scrollSpeed += 0.1f;
+				EnemyKinematics.main.speed += 2;
+				rainCooldown += Time.deltaTime + 1.0f;
 	
 			}
 		}
@@ -131,12 +136,8 @@ public class PlayerController : MonoBehaviour
 			Destroy (other.gameObject);
 		} else if (other.tag == "Diaper") {
 			DiaperCollect (other);
-		EnemyKinematics.main.speed = 1;
-			BackgroundRepeater.main.scrollSpeed = 2;
-			rainCooldown = Time.deltaTime + 3f;
+
 		}
-		else if (other.tag == "RainCloud")
-			RainCloudCollide (other);
 	}
 	
 
@@ -192,10 +193,11 @@ public class PlayerController : MonoBehaviour
     void DiaperCollect(Collider2D other)
     {
         DestroyObject(other.gameObject);
-		//_WetNappy = false;
-		_rainEffect = 0;
-        //TODO: remove negative effect
-    }
+		// reset difficultyå
+		EnemyKinematics.main.speed = 2;
+		BackgroundRepeater.main.scrollSpeed = 0;
+//		rainCooldown = Time.deltaTime + 3f;
+	}
 
 
     void RainCloudCollide(Collider2D other)
