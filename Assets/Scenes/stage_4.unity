@@ -279,6 +279,10 @@ Prefab:
       propertyPath: hazards.Array.data[0]
       value: 
       objectReference: {fileID: 1872871757}
+    - target: {fileID: 11483524, guid: 18c9572cf41c04d799d778b15da6f321, type: 2}
+      propertyPath: timeLeft
+      value: 60
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 18c9572cf41c04d799d778b15da6f321, type: 2}
   m_IsPrefabParent: 0
