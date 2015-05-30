@@ -40,10 +40,6 @@ public class PlayerController : MonoBehaviour
 	private bool  _isInvulnerable;
     private float _invulnerableCooldown;
 
-	//private bool  _WetNappy;
-	public bool _rainLevel;
-	private float _rainEffect;
-
 	private float speedMag;
 
     private GameController Game_Ctrl;
@@ -115,8 +111,6 @@ public class PlayerController : MonoBehaviour
 
 		_dashPool += 0.01f;
 		Game_Ctrl.DashUpdate(_dashPool);
-
-		_rainEffect = _rainEffect + 0.05f;
 	}
 
 
@@ -126,13 +120,15 @@ public class PlayerController : MonoBehaviour
             print("player trig: " + other.tag);
 
         if (other.tag == "Bird") {
-			TakeHit ();
-			Vector3 reflect = Vector3.Reflect( transform.position, Vector3.up ) * -100;
+
+
+			Vector3 reflect = Vector3.Reflect( transform.position, Vector3.up * -1 ) ;
 			other.GetComponent<EnemyKinematics>().isHit = true;
-			other.GetComponent<Rigidbody2D>().AddForce(new Vector2(reflect.x, reflect.y));
-			//other.GetComponent<Rigidbody2D> ().velocity = transform.up * -5;
-			GetComponent<AudioSource> ().PlayOneShot (birdSqwark);
-	
+			other.GetComponent<Rigidbody2D> ().velocity = new Vector2(reflect.x, reflect.y) * 2;
+			if (other.GetComponent<EnemyKinematics>().isHit){
+				TakeHit ();
+			    GetComponent<AudioSource> ().PlayOneShot (birdSqwark);
+			}
 		} else if (other.tag == "Branch") {
 
 			TakeHit ();
@@ -167,8 +163,6 @@ public class PlayerController : MonoBehaviour
 
 	float PlayerMagUpdate()
     {
-
-
         if (Game_Ctrl.StageIsOver() && !Game_Ctrl.d_WIN_LOSE_OFF)
             return 0.0f;
         else if ( _isInvulnerable )
@@ -194,18 +188,13 @@ public class PlayerController : MonoBehaviour
     void DiaperCollect(Collider2D other)
     {
         DestroyObject(other.gameObject);
-		// reset difficultyå
+		// reset difficulty
+		//if 
 		EnemyKinematics.main.speed = 2;
 		BackgroundRepeater.main.scrollSpeed = 0;
+
 //		rainCooldown = Time.deltaTime + 3f;
 	}
-
-
-    void RainCloudCollide(Collider2D other)
-    {
-        //TODO: make RainCloud rain
-		//_WetNappy = true;
-    }
 
 
 	void InvulnerabilityUpdate()
