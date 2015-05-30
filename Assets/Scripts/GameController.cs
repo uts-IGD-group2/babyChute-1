@@ -150,9 +150,8 @@ public class GameController : MonoBehaviour {
 
 	public void DashUpdate(float dashSuckRate) 
 	{
-		_dashPool -= dashSuckRate;
-		if ( _dashPool <= 0 )
-			_dashPool = 0.0f;
+		_dashPool = dashSuckRate;
+
 	
 		boostBar.fillAmount = _dashPool;
 
@@ -186,7 +185,7 @@ public class GameController : MonoBehaviour {
         Vector3 pos = lifeDecal.transform.position;
         Vector3 max = lifeDecal.GetComponent<SpriteRenderer>().bounds.max;
         
-        // TODO: IMPLEMENT ICONS TO REPRESENT LIFE COUNT.
+        //  TODO: IMPLEMENT ICONS TO REPRESENT LIFE COUNT.
         //for (int ii = 1; ii < playerLives; ii++)
         //{
         //    pos.x += max.x * ii;

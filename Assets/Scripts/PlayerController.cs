@@ -67,6 +67,8 @@ public class PlayerController : MonoBehaviour
 		{
 			if ( _moveHorizontal > 0.01 || _moveHorizontal < -0.01 )
 				DashTry();
+
+		
 		}
 
 
@@ -144,7 +146,7 @@ public class PlayerController : MonoBehaviour
 	{
 		if ( Game_Ctrl.DashCanPlayer() )
 		{
-			Game_Ctrl.DashUpdate(dashSuckRate);
+			Game_Ctrl.DashUpdate(0);
 			
 			GetComponent<AudioSource>().PlayOneShot(babyLaugh);
 			Destroy(Instantiate(fart), 3);
