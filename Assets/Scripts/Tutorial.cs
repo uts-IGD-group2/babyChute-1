@@ -17,15 +17,23 @@ public class Tutorial : MonoBehaviour {
 	private Color[] colors; 
 	// Use this for initialization
 	void Start () {
+
 		FadeIn ();
 		Move.GetComponent<Renderer>().enabled = true;
 		Boost.GetComponent<Renderer>().enabled = false;
+
+	
+
 	}
 	
 	// Update is called once per frame
 	void Update () {
 	
-		if (Time.time > moveTimer) {
+
+		moveTimer -= Time.deltaTime;
+		boostTimer -= Time.deltaTime;
+
+		if (moveTimer <= 0) {
 			Move.GetComponent<Renderer>().enabled = false;
 			Boost.GetComponent<Renderer>().enabled = true;
 
@@ -34,11 +42,13 @@ public class Tutorial : MonoBehaviour {
 
 
 
-		if (Time.time > boostTimer) {
+		if (boostTimer<= 0) {
 
 			FadeOut();
 			Move.GetComponent<Renderer>().enabled = false;
+			Boost.GetComponent<Renderer>().enabled = false;
 		}
+
 	}
 
 	
