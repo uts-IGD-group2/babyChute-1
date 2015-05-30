@@ -47,6 +47,7 @@ GameObject:
   - 60: {fileID: 6002226}
   - 114: {fileID: 11461240}
   - 82: {fileID: 8232302}
+  - 81: {fileID: 8128018}
   m_Layer: 8
   m_Name: Baby
   m_TagString: Player
@@ -345,6 +346,13 @@ PolygonCollider2D:
     - - {x: -.300000012, y: 3.51999998}
       - {x: -.219999999, y: 3.46000004}
       - {x: -.270000011, y: 3.45000005}
+--- !u!81 &8128018
+AudioListener:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 190030}
+  m_Enabled: 1
 --- !u!82 &8232302
 AudioSource:
   m_ObjectHideFlags: 1
@@ -436,9 +444,9 @@ MonoBehaviour:
   birdSqwark: {fileID: 8300000, guid: 706d8b7c15d954b94af810f919c054b9, type: 3}
   fart: {fileID: 186724, guid: d00b3bcdd6e4f4e9aa1c101c7440dc77, type: 2}
   boundary:
-    xMin: -3
-    xMax: 3
-    yMin: -2
+    xMin: -3.5
+    xMax: 3.5
+    yMin: 2
     yMax: 2
   rainCooldown: 3
   _rainLevel: 0
