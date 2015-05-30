@@ -664,6 +664,14 @@ Prefab:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 11483524, guid: 18c9572cf41c04d799d778b15da6f321, type: 2}
+      propertyPath: timeLeft
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 22458804, guid: 18c9572cf41c04d799d778b15da6f321, type: 2}
+      propertyPath: m_SizeDelta.x
+      value: 500
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 18c9572cf41c04d799d778b15da6f321, type: 2}
   m_IsPrefabParent: 0
