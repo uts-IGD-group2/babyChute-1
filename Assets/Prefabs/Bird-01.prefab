@@ -113,6 +113,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
+  isHit: 1
 --- !u!114 &11454636
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -47,8 +47,6 @@ GameObject:
   - 60: {fileID: 6002226}
   - 114: {fileID: 11461240}
   - 82: {fileID: 8232302}
-  - 82: {fileID: 8247640}
-  - 81: {fileID: 8128018}
   m_Layer: 8
   m_Name: Baby
   m_TagString: Player
@@ -347,83 +345,7 @@ PolygonCollider2D:
     - - {x: -.300000012, y: 3.51999998}
       - {x: -.219999999, y: 3.46000004}
       - {x: -.270000011, y: 3.45000005}
---- !u!81 &8128018
-AudioListener:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 190030}
-  m_Enabled: 1
 --- !u!82 &8232302
-AudioSource:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 190030}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    - time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
---- !u!82 &8247640
 AudioSource:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -506,7 +428,7 @@ MonoBehaviour:
   gravity: 10
   playerSpeed: 3
   dashSpeed: 6
-  dashCooldownPeriod: 2
+  dashSuckRate: .100000001
   invulnerableCooldownPeriod: 0
   babyLaugh: {fileID: 8300000, guid: ffb5ad2a0ad0d451785a752854d87fe1, type: 3}
   branchBreak: {fileID: 8300000, guid: f654a1179b82843af9b1653d0310cd83, type: 3}
@@ -514,10 +436,12 @@ MonoBehaviour:
   birdSqwark: {fileID: 8300000, guid: 706d8b7c15d954b94af810f919c054b9, type: 3}
   fart: {fileID: 186724, guid: d00b3bcdd6e4f4e9aa1c101c7440dc77, type: 2}
   boundary:
-    xMin: -3.5
-    xMax: 3.5
-    yMin: 3
-    yMax: 3
+    xMin: -3
+    xMax: 3
+    yMin: -2
+    yMax: 2
+  rainCooldown: 3
+  _rainLevel: 0
 --- !u!212 &21219374
 SpriteRenderer:
   m_ObjectHideFlags: 1

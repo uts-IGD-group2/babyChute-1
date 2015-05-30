@@ -75,7 +75,7 @@ public class PlayerController : MonoBehaviour
 		}
 
 
-        Vector3 movement = new Vector3(_moveHorizontal, _moveVertical * 50, 0.0f);
+        Vector3 movement = new Vector3(_moveHorizontal, _moveVertical * 5, 0.0f);
 		// check to see if player is dashing
 		speedMag = PlayerMagUpdate();
 
@@ -102,17 +102,14 @@ public class PlayerController : MonoBehaviour
 			if(rainSpeed == true)
 			BackgroundRepeater.main.scrollSpeed += 0.01f;
 		
-
 			if (BackgroundRepeater.main.scrollSpeed >= 15)
 				BackgroundRepeater.main.scrollSpeed = 15;
 
-			
 			if (rainCooldown <= 0) {
 				//BackgroundRepeater.main.scrollSpeed += 0.1f;
 				rainSpeed = true;
 				EnemyKinematics.main.speed += 1;
 				rainCooldown += Time.deltaTime + 1.0f;
-	
 			}
 		}
 
@@ -130,7 +127,10 @@ public class PlayerController : MonoBehaviour
 
         if (other.tag == "Bird") {
 			TakeHit ();
-			other.GetComponent<Rigidbody2D> ().velocity = transform.up * -5;
+			Vector3 reflect = Vector3.Reflect( transform.position, Vector3.up ) * -100;
+			other.GetComponent<EnemyKinematics>().isHit = true;
+			other.GetComponent<Rigidbody2D>().AddForce(new Vector2(reflect.x, reflect.y));
+			//other.GetComponent<Rigidbody2D> ().velocity = transform.up * -5;
 			GetComponent<AudioSource> ().PlayOneShot (birdSqwark);
 	
 		} else if (other.tag == "Branch") {

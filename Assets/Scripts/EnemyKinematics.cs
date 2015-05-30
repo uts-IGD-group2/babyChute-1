@@ -9,12 +9,14 @@ public class EnemyKinematics : MonoBehaviour {
 	public static EnemyKinematics main;
     private GameController Game_Ctrl;
 
+	public bool isHit; 
+
 
 	void Start () 
 	{
-		GetComponent<Rigidbody2D>().velocity = new Vector2(speed, 0);
-		GetComponent<Rigidbody2D>().velocity = transform.up * speed;
-
+//		GetComponent<Rigidbody2D>().velocity = new Vector2(speed, 0);
+//		GetComponent<Rigidbody2D>().velocity = transform.up * speed;
+		isHit = false;
         Game_Ctrl = FindObjectOfType(typeof(GameController)) as GameController;
 	}
 
@@ -26,8 +28,13 @@ public class EnemyKinematics : MonoBehaviour {
 
 	void Update () 
 	{
-		GetComponent<Rigidbody2D>().velocity = new Vector2(speed, 0);
-		GetComponent<Rigidbody2D>().velocity = transform.up * speed;
+		if ( !isHit )
+		{
+			GetComponent<Rigidbody2D>().velocity = new Vector2(speed, 0);
+			GetComponent<Rigidbody2D>().velocity = transform.up * speed;
+		}
 	}
+
+
 
 }
