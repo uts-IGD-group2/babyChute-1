@@ -395,6 +395,10 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 11475996, guid: 050af85c89837424db44320bdec4deef, type: 2}
+      propertyPath: scrollSpeed
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 050af85c89837424db44320bdec4deef, type: 2}
   m_IsPrefabParent: 0

@@ -30,6 +30,7 @@ public class PlayerController : MonoBehaviour
 	private bool gotDiaper = false;
 	// Internal attributes to keep track of the player state
     private bool _playerIsDashing;
+	private bool rainSpeed = false;
 
 	private float _moveHorizontal;
 	private float _moveVertical;
@@ -57,7 +58,7 @@ public class PlayerController : MonoBehaviour
 		Game_Ctrl = FindObjectOfType( typeof(GameController) ) as GameController;
 
 		if (Application.loadedLevel == 4) 
-			BackgroundRepeater.main.scrollSpeed = 0f;
+			BackgroundRepeater.main.scrollSpeed = 2;
 	}
 		
 	void FixedUpdate ()
@@ -97,16 +98,19 @@ public class PlayerController : MonoBehaviour
 		// Apply Rain level stage attributes.
 		if (Application.loadedLevel == 4) {
 			rainCooldown -= Time.deltaTime;
-			BackgroundRepeater.main.scrollSpeed += 0.03f;
+
+			if(rainSpeed == true)
+			BackgroundRepeater.main.scrollSpeed += 0.01f;
 		
 
 			if (BackgroundRepeater.main.scrollSpeed >= 15)
-				BackgroundRepeater.main.scrollSpeed = 15f;
+				BackgroundRepeater.main.scrollSpeed = 15;
 
 			
 			if (rainCooldown <= 0) {
 				//BackgroundRepeater.main.scrollSpeed += 0.1f;
-				EnemyKinematics.main.speed += 2;
+				rainSpeed = true;
+				EnemyKinematics.main.speed += 1;
 				rainCooldown += Time.deltaTime + 1.0f;
 	
 			}
