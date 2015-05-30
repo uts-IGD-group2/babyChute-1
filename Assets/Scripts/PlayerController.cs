@@ -13,25 +13,34 @@ public class PlayerController : MonoBehaviour
 {
 	public float gravity;
 	public float playerSpeed;
-	public float dashSpeed = 15;
-	public float dashCooldownPeriod = 3.0f;
+	public float dashSpeed = 6;
+
+	public  float dashSuckRate = 0.1f;
+
 	public float invulnerableCooldownPeriod = 3.0f;
 
+	public AudioClip babyLaugh;
+	public AudioClip branchBreak;
+	public AudioClip balloonPop;
+	public AudioClip birdSqwark;
+	public GameObject fart;
 	public Boundary boundary;
 
+	public float rainCooldown = 3f;
+	private bool gotDiaper = false;
 	// Internal attributes to keep track of the player state
     private bool _playerIsDashing;
+	private bool rainSpeed = false;
 
 	private float _moveHorizontal;
 	private float _moveVertical;
-
-	private float _dashNext;
-	private float _dashCooldown;
+	
+	private float _dashPool;
 
 	private bool  _isInvulnerable;
     private float _invulnerableCooldown;
 
-	private bool  _WetNappy;
+	private float speedMag;
 
     private GameController Game_Ctrl;
 
@@ -43,8 +52,11 @@ public class PlayerController : MonoBehaviour
 	void Start () 
 	{
 		_isInvulnerable = false;
+
 		Game_Ctrl = FindObjectOfType( typeof(GameController) ) as GameController;
 
+		if (Application.loadedLevel == 4) 
+			BackgroundRepeater.main.scrollSpeed = 2;
 	}
 		
 	void FixedUpdate ()
@@ -52,13 +64,16 @@ public class PlayerController : MonoBehaviour
 		_moveHorizontal = Input.GetAxis ("Horizontal");
 		_moveVertical   = Input.GetAxis ("Vertical");
         // Player want's to use dash ability
-        if (Input.GetKeyDown(KeyCode.Space))
-			if ( DashCan() )
-				DashStart();
+		if (Input.GetKeyDown(KeyCode.Space))
+		{
+			if ( _moveHorizontal > 0.01 || _moveHorizontal < -0.01 )
+				DashTry();
+		}
 
 
-        Vector3 movement = new Vector3(_moveHorizontal, _moveVertical * 50, 0.0f);
-		float speedMag = PlayerMagUpdate();
+        Vector3 movement = new Vector3(_moveHorizontal, _moveVertical * 5, 0.0f);
+		// check to see if player is dashing
+		speedMag = PlayerMagUpdate();
 
         GetComponent<Rigidbody2D>().velocity = movement * speedMag;
 		GetComponent<Rigidbody2D>().position = new Vector3 (
@@ -71,11 +86,31 @@ public class PlayerController : MonoBehaviour
 
 	void Update() 
 	{
-		DashUpdate();
-
 		// check invulnrability state
 		if ( _isInvulnerable )
 			InvulnerabilityUpdate();
+
+
+		// Apply Rain level stage attributes.
+		if (Application.loadedLevel == 4) {
+			rainCooldown -= Time.deltaTime;
+
+			if(rainSpeed == true)
+			BackgroundRepeater.main.scrollSpeed += 0.01f;
+		
+			if (BackgroundRepeater.main.scrollSpeed >= 15)
+				BackgroundRepeater.main.scrollSpeed = 15;
+
+			if (rainCooldown <= 0) {
+				//BackgroundRepeater.main.scrollSpeed += 0.1f;
+				rainSpeed = true;
+				EnemyKinematics.main.speed += 1;
+				rainCooldown += Time.deltaTime + 1.0f;
+			}
+		}
+
+		_dashPool += 0.01f;
+		Game_Ctrl.DashUpdate(_dashPool);
 	}
 
 
@@ -84,68 +119,56 @@ public class PlayerController : MonoBehaviour
         //if (Game_Ctrl.d_DEBUG)
             print("player trig: " + other.tag);
 
-        if ( other.tag == "Enemy" || other.tag == "Branch" )
-        {
-            if( !_isInvulnerable )
-            {
-                if (Game_Ctrl.d_DEBUG) 
-                    print("TakeHit");
-                
-                TakeHit();
-            }
-        }
+        if (other.tag == "Bird") {
 
-        else if( other.tag == "Diaper" )
-            DiaperCollect(other);
-        
-        else if( other.tag == "RainCloud" )
-            RainCloudCollide(other);
 
+			Vector3 reflect = Vector3.Reflect( transform.position, Vector3.up * -1 ) ;
+			other.GetComponent<EnemyKinematics>().isHit = true;
+			other.GetComponent<Rigidbody2D> ().velocity = new Vector2(reflect.x, reflect.y) * 2;
+			if (other.GetComponent<EnemyKinematics>().isHit){
+				TakeHit ();
+			    GetComponent<AudioSource> ().PlayOneShot (birdSqwark);
+			}
+		} else if (other.tag == "Branch") {
+
+			TakeHit ();
+			GetComponent<AudioSource> ().PlayOneShot (branchBreak);
+			Destroy (other.gameObject);
+		} else if (other.tag == "Balloon") {
+			
+			TakeHit ();
+			GetComponent<AudioSource> ().PlayOneShot (balloonPop);
+			Destroy (other.gameObject);
+		} else if (other.tag == "Diaper") {
+			DiaperCollect (other);
+
+		}
 	}
 	
 
 
 	// Custom methods
-	void DashUpdate() 
+	void DashTry()
 	{
-        _dashCooldown = _dashNext > Time.time ? _dashNext - Time.time : 0.0f;
-        _playerIsDashing = ( _dashCooldown > 0.1f );
-
-		Game_Ctrl.DashCooldownUpdate(_dashCooldown); 
+		if ( _dashPool >= 0.9 )
+		{
+			_dashPool = 0;
+			Game_Ctrl.DashUpdate(_dashPool);
+			
+			GetComponent<AudioSource>().PlayOneShot(babyLaugh);
+			Destroy(Instantiate(fart), 3);
+			_playerIsDashing = true; 
+		}
 	}
-
-
-	bool DashCan()
-    {
-        if (_moveHorizontal > 0.01 || _moveHorizontal < -0.01) 
-	    {
-            if ( Time.time > _dashNext )
-                return true;
-        }
-        return false;
-    }
-
-
-	void DashStart()
-    {
-        _dashNext = Time.time + dashCooldownPeriod;
-        _playerIsDashing = true;
-
-        // TODO: have burp/fart effect
-        //				Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
-        //				GetComponent<AudioSource>().Play ()
-    }
-
 
 	float PlayerMagUpdate()
     {
-        if ( Game_Ctrl.StageOverIs() && !Game_Ctrl.d_WIN_LOSE_OFF )
+        if (Game_Ctrl.StageIsOver() && !Game_Ctrl.d_WIN_LOSE_OFF)
             return 0.0f;
         else if ( _isInvulnerable )
-            return 0.5f;
-		else if ( _WetNappy )
-			return 0.5f;
+			return playerSpeed * 1.0f;
 
+		_playerIsDashing =  _dashPool <= 0.33;
         float mag = _playerIsDashing ? dashSpeed : playerSpeed;
         return mag;
     }
@@ -165,16 +188,13 @@ public class PlayerController : MonoBehaviour
     void DiaperCollect(Collider2D other)
     {
         DestroyObject(other.gameObject);
-		_WetNappy = false;
-        //TODO: remove negative effect
-    }
+		// reset difficulty
+		//if 
+		EnemyKinematics.main.speed = 2;
+		BackgroundRepeater.main.scrollSpeed = 0;
 
-
-    void RainCloudCollide(Collider2D other)
-    {
-        //TODO: make RainCloud rain
-		_WetNappy = true;
-    }
+//		rainCooldown = Time.deltaTime + 3f;
+	}
 
 
 	void InvulnerabilityUpdate()
@@ -190,7 +210,7 @@ public class PlayerController : MonoBehaviour
 			GetComponent<Renderer>().enabled = true;
 			_isInvulnerable = false;
 		}
-        if (Game_Ctrl.d_DEBUG)  print("isInvulnerable: " + _isInvulnerable); 
+//        if (Game_Ctrl.d_DEBUG)  print("isInvulnerable: " + _isInvulnerable); 
 	
     }
 
