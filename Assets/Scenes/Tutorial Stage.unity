@@ -666,7 +666,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11483524, guid: 18c9572cf41c04d799d778b15da6f321, type: 2}
       propertyPath: timeLeft
-      value: 20
+      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 22458804, guid: 18c9572cf41c04d799d778b15da6f321, type: 2}
       propertyPath: m_SizeDelta.x

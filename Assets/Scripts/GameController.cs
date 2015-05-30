@@ -84,6 +84,9 @@ public class GameController : MonoBehaviour {
 		//		SpawnWaves ();
 		StartCoroutine ( SpawnWaves () );
 
+		if (Application.loadedLevel == 1) 
+			timeLeft = 17;
+
 		_dashPool = 10.0f;
 	}
 
