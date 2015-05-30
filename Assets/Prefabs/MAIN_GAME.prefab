@@ -28,7 +28,6 @@ GameObject:
   - 20: {fileID: 2063314}
   - 92: {fileID: 9297396}
   - 124: {fileID: 12444172}
-  - 81: {fileID: 8143212}
   m_Layer: 5
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -266,8 +265,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 22437410}
   - {fileID: 495108}
+  - {fileID: 22437410}
   m_Father: {fileID: 0}
   m_RootOrder: 0
 --- !u!4 &495108
@@ -281,7 +280,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 492414}
-  m_RootOrder: 1
+  m_RootOrder: 0
 --- !u!20 &2063314
 Camera:
   m_ObjectHideFlags: 1
@@ -320,13 +319,6 @@ AudioListener:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 172726}
-  m_Enabled: 1
---- !u!81 &8143212
-AudioListener:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 142202}
   m_Enabled: 1
 --- !u!82 &8203738
 AudioSource:
@@ -498,14 +490,15 @@ MonoBehaviour:
   d_WIN_LOSE_OFF: 0
   d_DEBUG: 1
   hazards:
-  - {fileID: 125362, guid: 9631538f6879e4e4197a68e845573864, type: 2}
-  - {fileID: 175250, guid: 1d19ce745ba4874499ecb80da2168e3e, type: 2}
+  - {fileID: 122600, guid: d5b67535a4e7b6e469c8304ca78d4285, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
   spawnValues: {x: -3, y: -6, z: 0}
   hazardCount: 5
-  spawnWait: 1.5
-  startWait: 10
+  spawnWait: 3
+  startWait: 3
   waveWait: 1
-  timeForWin: 30
+  timeLeft: 30
   playerLives: 3
   stageText: {fileID: 11472968}
   lifeText: {fileID: 11487860}
@@ -959,7 +952,7 @@ RectTransform:
   - {fileID: 22426810}
   - {fileID: 22409416}
   m_Father: {fileID: 492414}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
