@@ -56,6 +56,8 @@ public class PlayerController : MonoBehaviour
 
 		Game_Ctrl = FindObjectOfType( typeof(GameController) ) as GameController;
 
+		if (Application.loadedLevel == 4) 
+			BackgroundRepeater.main.scrollSpeed = 0f;
 	}
 		
 	void FixedUpdate ()
