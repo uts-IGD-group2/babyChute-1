@@ -34,7 +34,6 @@ public class GameController : MonoBehaviour {
     public SpriteRenderer lifeDecal;
 	public Text timerText;
 	public Image boostBar;
-	public Text  d_cooldownText;
 	
 	
 	// Game play state
@@ -76,10 +75,6 @@ public class GameController : MonoBehaviour {
 
         keyPromptText.text = "";
 		gameOverText.text = "";
-		
-	
-		//_timeLeft = timeForWin;
-		//TimeleftUpdate ( );
 
 		//		SpawnWaves ();
 		StartCoroutine ( SpawnWaves () );
@@ -95,12 +90,6 @@ public class GameController : MonoBehaviour {
 
 		// Process game time mechanics
 		TimersUpdate ( );
-
-		if ( boostBar.fillAmount < 1 )
-		{
-			_dashPool += 0.01f;
-			boostBar.fillAmount = _dashPool;
-		}
 
 		if ( !d_WIN_LOSE_OFF )
 		{
@@ -151,23 +140,12 @@ public class GameController : MonoBehaviour {
 	}
 
 
-	public void DashUpdate(float dashSuckRate) 
+	public void DashUpdate(float _dashPool) 
 	{
-		_dashPool = dashSuckRate;
-
-	
 		boostBar.fillAmount = _dashPool;
-
-		if (d_DEBUG)
-			d_cooldownText.text = "t2Dash: " + _dashPool;
-		
 	}
 
-	public bool DashCanPlayer ()
-	{
-		return ( _dashPool >= 0.9 );
-		 
-	}
+
 
 	/// <summary> /// --- LIFE methods --- /// </summary>
 	public void LifeRemove ( int lifeValue=1 ) 
@@ -224,29 +202,7 @@ public class GameController : MonoBehaviour {
 		}
 
 		timerText.text = "t2Win: " + timeLeft;
-
-		/*
-		 TimeleftUpdate();
-        _stageWin = _timeLeft < 0 ;
-*/
 	}
-
-
-	/*
-
-	void TimeleftUpdate() 
-    {
-        float tt = StageIsOver() ? 0.0f : _timeLeft;
-		string floatToTime = string.Format(
-			"{0:#0}:{1:00}.{2:0}",
-			Mathf.Floor(tt / 60),     // minutes
-			Mathf.Floor(tt) % 60,     // seconds
-			Mathf.Floor((tt*10) % 10) // miliseconds
-			);
-		timerText.text = "t2Win: " + floatToTime;
-	}
-*/
-
 
 	/// <summary> /// --- STAGE methods /// </summary>
 	void StageUpdate()
