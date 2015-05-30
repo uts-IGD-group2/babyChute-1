@@ -201,7 +201,7 @@ public class GameController : MonoBehaviour {
 			StageWin();
 		}
 
-		timerText.text = "t2Win: " + timeLeft;
+		//timerText.text = "t2Win: " + timeLeft;
 	}
 
 	/// <summary> /// --- STAGE methods /// </summary>
