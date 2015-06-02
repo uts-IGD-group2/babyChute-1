@@ -99,11 +99,11 @@ public class GameController : MonoBehaviour {
             else if ( _stageWin )
 				StageWin ( );
 		}
-
-//        if ( Input.GetKeyDown(KeyCode.Z) )
-//            StageWin ( );
-//        if ( Input.GetKeyDown(KeyCode.X) )
-//            StageNext ( );
+	
+	if (Input.GetKeyDown(KeyCode.P))
+		StagePrevious();
+    if ( Input.GetKeyDown(KeyCode.N) )
+        StageWin( );
 //        if ( Input.GetKeyDown(KeyCode.K) )
 //            LifeRemove();
 	}
@@ -234,7 +234,11 @@ public class GameController : MonoBehaviour {
 
 		}
 	}
-
+	void StagePrevious() 
+	{
+		_stageWin = false;
+		Application.LoadLevel (Application.loadedLevel - 1);
+	}
 
 	public void StageLose() 
 	{

@@ -81,6 +81,7 @@ public class PlayerController : MonoBehaviour
 			Mathf.Clamp (GetComponent<Rigidbody2D>().position.y, boundary.yMin, boundary.yMax),
 			0.0f
 			);
+
 	}
 
 
